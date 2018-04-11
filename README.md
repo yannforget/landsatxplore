@@ -4,6 +4,27 @@ The **landsatxplore** Python package provides an interface to the [EarthExplorer
 
 It supports three data sets: `LANDSAT_TM_C1`, `LANDSAT_ETM_C1` and `LANDSAT_8_C1`.
 
+# Quick start
+
+Searching for Landsat 5 TM scenes that contains the location (12.53, -1.53) acquired during the year 1995.
+
+```
+landsatxplore search --username <username> --password <password> \
+    --dataset LANDSAT_TM_C1 --location 12.53 -1.53 \
+    --start 1995-01-01 --end 1995-12-31
+```
+
+Downloading three Landsat scenes from different datasets.
+
+```
+landsatxplore download --username <username> --password <password> \
+    LT51960471995178MPS00 \
+    LC80390222013076EDC00 \
+    LC82150682015350LGN01
+```
+
+To use the package, Earth Explorer credentials are required ([registration](https://ers.cr.usgs.gov/register/)).
+
 # Installation
 
 The package can be installed using pip.
