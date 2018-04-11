@@ -1,20 +1,35 @@
-from distutils.core import setup
+from codecs import open
+from os import path
 
-def readme():
-    with open('README.rst') as f:
-        return f.read()
+from setuptools import find_packages, setup
+
+here = path.abspath(path.dirname(__file__))
+
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='landsatxplore',
     version='0.1',
     description='Search and download Landsat scenes from EarthExplorer.',
-    packages=['landsatxplore',],
-    license='MIT',
-    long_description=readme(),
-    keywords='remote_sensing landsat satellite',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/yannforget/landsatxplore',
     author='Yann Forget',
     author_email='yannforget@mailbox.org',
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: GIS',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+    ],
+    keywords='remote_sensing landsat satellite earth_observation',
+    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=[
         'requests',
         'tqdm',
