@@ -20,7 +20,9 @@ pip install landsatxplore
 
 ```
 landsatxplore --help
+```
 
+```
 Usage: landsatxplore [OPTIONS] COMMAND [ARGS]...
 
 Options:
@@ -32,6 +34,10 @@ Commands:
 ```
 
 ### Searching
+
+```
+landsatxplore search --help
+```
 
 ```
 Usage: landsatxplore search [OPTIONS]
@@ -53,6 +59,10 @@ Options:
 ```
 
 ### Downloading
+
+```
+landsatxplore download --help
+```
 
 ```
 Usage: landsatxplore download [OPTIONS] [SCENES]...
