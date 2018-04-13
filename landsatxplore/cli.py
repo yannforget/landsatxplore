@@ -1,6 +1,9 @@
 """Command-line interface."""
 
 import os
+import json
+import csv
+from io import StringIO
 
 import click
 
@@ -31,8 +34,11 @@ def cli():
 @click.option('-c', '--clouds', type=click.INT, help='Max. cloud cover (1-100).')
 @click.option('-s', '--start', type=click.STRING, help='Start date (YYYY-MM-DD).')
 @click.option('-e', '--end', type=click.STRING, help='End date (YYYY-MM-DD).')
+@click.option(
+    '-o', '--output', type=click.Choice(['scene_id', 'product_id', 'json', 'csv']),
+    default='scene_id', help='Output format.')
 @click.option('-m', '--limit', type=click.INT, help='Max. results returned.')
-def search(username, password, dataset, location, bbox, clouds, start, end, limit):
+def search(username, password, dataset, location, bbox, clouds, start, end, output, limit):
     """Search for Landsat scenes."""
     api = API(username, password)
 
@@ -54,8 +60,27 @@ def search(username, password, dataset, location, bbox, clouds, start, end, limi
     results = api.search(**where)
     api.logout()
 
-    for scene in results:
-        click.echo(scene['entityId'])
+    if not results:
+        return
+
+    if output == 'scene_id':
+        for scene in results:
+            click.echo(scene['entityId'])
+
+    if output == 'product_id':
+        for scene in results:
+            click.echo(scene['displayId'])
+
+    if output == 'json':
+        dump = json.dumps(results, indent=True)
+        click.echo(dump)
+
+    if output == 'csv':
+        with StringIO('tmp.csv') as f:
+            w = csv.DictWriter(f, results[0].keys())
+            w.writeheader()
+            w.writerows(results)
+            click.echo(f.getvalue())
 
 
 @click.command()
