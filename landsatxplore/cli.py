@@ -88,7 +88,8 @@ def search(username, password, dataset, location, bbox, clouds, start, end, outp
               envvar='LANDSATXPLORE_USERNAME')
 @click.option('--password', '-p', type=click.STRING, help='EarthExplorer password.',
               envvar='LANDSATXPLORE_PASSWORD')
-@click.option('--output', '-o', type=click.Path(exists=True, dir_okay=True), help='Output directory.')
+@click.option('--output', '-o', type=click.Path(exists=True, dir_okay=True), 
+              default='.', help='Output directory.')
 @click.argument('scenes', type=click.STRING, nargs=-1)
 def download(username, password, output, scenes):
     """Download one or several Landsat scenes."""
