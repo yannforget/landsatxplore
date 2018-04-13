@@ -16,18 +16,22 @@ def cli():
 
 
 @click.command()
-@click.option('--username', type=click.STRING, help='EarthExplorer username.')
-@click.option('--password', type=click.STRING, help='EarthExplorer password.')
 @click.option(
-    '--dataset', type=click.Choice(DATASETS), help='Landsat data set.',
+    '-u', '--username', type=click.STRING, help='EarthExplorer username.',
+    envvar='LANDSATXPLORE_USERNAME')
+@click.option(
+    '-p', '--password', type=click.STRING, help='EarthExplorer password.',
+    envvar='LANDSATXPLORE_PASSWORD')
+@click.option(
+    '-d', '--dataset', type=click.Choice(DATASETS), help='Landsat data set.',
     default='LANDSAT_8_C1'
 )
-@click.option('--location', type=click.FLOAT, nargs=2, help='Point of interest (latitude, longitude).')
-@click.option('--bbox', type=click.FLOAT, nargs=4, help='Bounding box (xmin, ymin, xmax, ymax).')
-@click.option('--clouds', type=click.INT, help='Max. cloud cover (1-100).')
-@click.option('--start', type=click.STRING, help='Start date (YYYY-MM-DD).')
-@click.option('--end', type=click.STRING, help='End date (YYYY-MM-DD).')
-@click.option('--limit', type=click.INT, help='Max. results returned.')
+@click.option('-l', '--location', type=click.FLOAT, nargs=2, help='Point of interest (latitude, longitude).')
+@click.option('-b', '--bbox', type=click.FLOAT, nargs=4, help='Bounding box (xmin, ymin, xmax, ymax).')
+@click.option('-c', '--clouds', type=click.INT, help='Max. cloud cover (1-100).')
+@click.option('-s', '--start', type=click.STRING, help='Start date (YYYY-MM-DD).')
+@click.option('-e', '--end', type=click.STRING, help='End date (YYYY-MM-DD).')
+@click.option('-m', '--limit', type=click.INT, help='Max. results returned.')
 def search(username, password, dataset, location, bbox, clouds, start, end, limit):
     """Search for Landsat scenes."""
     api = API(username, password)
@@ -55,8 +59,10 @@ def search(username, password, dataset, location, bbox, clouds, start, end, limi
 
 
 @click.command()
-@click.option('--username', '-u', type=click.STRING, help='EarthExplorer username.')
-@click.option('--password', '-p', type=click.STRING, help='EarthExplorer password.')
+@click.option('--username', '-u', type=click.STRING, help='EarthExplorer username.',
+              envvar='LANDSATXPLORE_USERNAME')
+@click.option('--password', '-p', type=click.STRING, help='EarthExplorer password.',
+              envvar='LANDSATXPLORE_PASSWORD')
 @click.option('--output', '-o', type=click.Path(exists=True, dir_okay=True), help='Output directory.')
 @click.argument('scenes', type=click.STRING, nargs=-1)
 def download(username, password, output, scenes):
