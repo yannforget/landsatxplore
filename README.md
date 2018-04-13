@@ -14,13 +14,11 @@ landsatxplore search --username <username> --password <password> \
     --start 1995-01-01 --end 1995-12-31
 ```
 
-Downloading three Landsat scenes from different datasets.
+Downloading three Landsat scenes from different datasets in the current directory.
 
 ```
 landsatxplore download --username <username> --password <password> \
-    LT51960471995178MPS00 \
-    LC80390222013076EDC00 \
-    LC82150682015350LGN01
+    --output . LT51960471995178MPS00 LC80390222013076EDC00 LC82150682015350LGN01
 ```
 
 To use the package, Earth Explorer credentials are required ([registration](https://ers.cr.usgs.gov/register/)).
