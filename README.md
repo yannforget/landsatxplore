@@ -1,5 +1,7 @@
 # Description
 
+![CLI Demo](https://raw.githubusercontent.com/yannforget/landsatxplore/master/demo.gif)
+
 The **landsatxplore** Python package provides an interface to the [EarthExplorer](http://earthexplorer.usgs.gov/) portal to search and download [Landsat Collections](https://landsat.usgs.gov/landsat-collections) scenes through a command-line interface or a Python API.
 
 It supports three data sets: `LANDSAT_TM_C1`, `LANDSAT_ETM_C1` and `LANDSAT_8_C1`.
