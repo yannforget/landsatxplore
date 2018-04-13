@@ -10,7 +10,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='landsatxplore',
-    version='0.0.1',
+    version='0.0.3',
     description='Search and download Landsat scenes from EarthExplorer.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -28,7 +28,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    keywords='remote_sensing landsat satellite earth_observation',
+    keywords=['earth observation', 'remote sensing', 'satellite imagery', 'landsat'],
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=[
         'requests',
