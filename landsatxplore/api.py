@@ -135,8 +135,8 @@ class API(object):
                   'idList': id_list, 'inputField': 'entityId'}
         if inverse:
             params.update(inputField='displayId')
-        response = self.request('lookup', **params)
-        return response['idList']
+        response = self.request('idlookup', **params)
+        return list(response.values())
 
     def metadata(self, dataset, id_list):
         """Request metadata for a given list of scenes.

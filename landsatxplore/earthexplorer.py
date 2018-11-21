@@ -48,6 +48,7 @@ class EarthExplorer(object):
         """Access Earth Explorer portal."""
         self.session = requests.session()
         self.login(username, password)
+        self.api = API(username, password)
 
     def logged_in(self):
         """Check if the log-in has been successfull. Search for
@@ -93,5 +94,7 @@ class EarthExplorer(object):
         directory.
         """
         dataset = guess_dataset(scene_id)
+        if is_product_id(scene_id):
+            scene_id = self.api.lookup(dataset, [scene_id], inverse=True)[0]
         url = EE_DOWNLOAD_URL.format(folder=EE_FOLDER[dataset], sid=scene_id)
         self._download(url, output_dir, file_size=SIZES[dataset])
