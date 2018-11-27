@@ -88,6 +88,7 @@ class EarthExplorer(object):
                         if chunk:
                             f.write(chunk)
                             pbar.update(chunk_size)
+        return local_filename
 
     def download(self, scene_id, output_dir):
         """Download a Landsat scene given its identifier and an output
@@ -97,4 +98,5 @@ class EarthExplorer(object):
         if is_product_id(scene_id):
             scene_id = self.api.lookup(dataset, [scene_id], inverse=True)[0]
         url = EE_DOWNLOAD_URL.format(folder=EE_FOLDER[dataset], sid=scene_id)
-        self._download(url, output_dir, file_size=SIZES[dataset])
+        filename = self._download(url, output_dir, file_size=SIZES[dataset])
+        return filename
