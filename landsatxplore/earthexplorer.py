@@ -21,11 +21,6 @@ EE_FOLDER = {
     'LANDSAT_ETM_C1': '12267',
     'LANDSAT_8_C1': '12864'
 }
-SIZES = {
-    'LANDSAT_TM_C1': 150 * 1024**2,
-    'LANDSAT_ETM_C1': 235 * 1024**2,
-    'LANDSAT_8_C1': 919 * 1024**2
-}
 
 
 def _get_tokens(body):
@@ -76,12 +71,12 @@ class EarthExplorer(object):
         """Log out from Earth Explorer."""
         self.session.get(EE_LOGOUT_URL)
 
-    def _download(self, url, output_dir, file_size, chunk_size=1024):
+    def _download(self, url, output_dir, chunk_size=1024):
         """Download remote file given its URL."""
-        with tqdm(total=file_size, unit_scale=True, unit='B') as pbar:
-            with self.session.get(url, stream=True, allow_redirects=True) as r:
-                local_filename = r.headers['Content-Disposition'].split(
-                    '=')[-1]
+        with self.session.get(url, stream=True, allow_redirects=True) as r:
+            file_size = int(r.headers['Content-Length'])
+            with tqdm(total=file_size, unit_scale=True, unit='B', unit_divisor=1024) as pbar:
+                local_filename = r.headers['Content-Disposition'].split('=')[-1]
                 local_filename = os.path.join(output_dir, local_filename)
                 with open(local_filename, 'wb') as f:
                     for chunk in r.iter_content(chunk_size=chunk_size):
@@ -98,5 +93,5 @@ class EarthExplorer(object):
         if is_product_id(scene_id):
             scene_id = self.api.lookup(dataset, [scene_id], inverse=True)[0]
         url = EE_DOWNLOAD_URL.format(folder=EE_FOLDER[dataset], sid=scene_id)
-        filename = self._download(url, output_dir, file_size=SIZES[dataset])
+        filename = self._download(url, output_dir)
         return filename
