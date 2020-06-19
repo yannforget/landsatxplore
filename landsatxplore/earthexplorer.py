@@ -87,6 +87,7 @@ class EarthExplorer(object):
         """Download a Landsat scene given its identifier and an output
         directory.
         """
+        os.makedirs(output_dir, exist_ok=True)
         dataset = guess_dataset(scene_id)
         if is_product_id(scene_id):
             scene_id = self.api.lookup(dataset, [scene_id], inverse=True)[0]
