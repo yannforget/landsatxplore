@@ -25,8 +25,8 @@ EE_FOLDER = {
 
 def _get_tokens(body):
     """Get `csrf_token` and `__ncforminfo`."""
-    csrf = re.findall(r'name="csrf_token" value="(.+?)"', body)
-    ncform = re.findall(r'name="__ncforminfo" value="(.+?)"', body)
+    csrf = re.findall(r'name="csrf" value="(.+?)"', body)[0]
+    ncform = re.findall(r'name="__ncforminfo" value="(.+?)"', body)[0]
 
     if not csrf:
         raise EarthExplorerError('EE: login failed (csrf token not found).')
@@ -46,11 +46,9 @@ class EarthExplorer(object):
         self.api = API(username, password)
 
     def logged_in(self):
-        """Check if the log-in has been successfull. Search for
-        the log-out URL in the portal html body.
-        """
-        rsp = self.session.get(EE_URL)
-        return EE_LOGOUT_URL in rsp.text
+        """Check if the log-in has been successfull based on session cookies."""
+        eros_sso = self.session.cookies.get("EROS_SSO_production_secure")
+        return bool(eros_sso)
 
     def login(self, username, password):
         """Login to Earth Explorer."""
@@ -59,10 +57,10 @@ class EarthExplorer(object):
         payload = {
             'username': username,
             'password': password,
-            'csrf_token': csrf,
+            'csrf': csrf,
             '__ncforminfo': ncform}
         rsp = self.session.post(
-            EE_LOGIN_URL, data=payload, allow_redirects=False)
+            EE_LOGIN_URL, data=payload, allow_redirects=True)
 
         if not self.logged_in():
             raise EarthExplorerError('EE: login failed.')
@@ -74,7 +72,7 @@ class EarthExplorer(object):
     def _download(self, url, output_dir, chunk_size=1024):
         """Download remote file given its URL."""
         with self.session.get(url, stream=True, allow_redirects=True) as r:
-            file_size = int(r.headers['Content-Length'])
+            file_size = int(r.headers.get("Content-Length"))
             with tqdm(total=file_size, unit_scale=True, unit='B', unit_divisor=1024) as pbar:
                 local_filename = r.headers['Content-Disposition'].split('=')[-1]
                 local_filename = os.path.join(output_dir, local_filename)
