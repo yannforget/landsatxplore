@@ -15,11 +15,11 @@ from landsatxplore.util import guess_dataset, is_product_id
 EE_URL = 'https://earthexplorer.usgs.gov/'
 EE_LOGIN_URL = 'https://ers.cr.usgs.gov/login/'
 EE_LOGOUT_URL = 'https://earthexplorer.usgs.gov/logout'
-EE_DOWNLOAD_URL = 'https://earthexplorer.usgs.gov/download/{folder}/{sid}/STANDARD/EE'
-EE_FOLDER = {
-    'LANDSAT_TM_C1': '12266',
-    'LANDSAT_ETM_C1': '12267',
-    'LANDSAT_8_C1': '12864'
+EE_DOWNLOAD_URL = "https://earthexplorer.usgs.gov/download/{dataset_id}/{scene_id}/EE/"
+DATASETS = {
+    "LANDSAT_TM_C1": "5e83d08fd9932768",
+    "LANDSAT_ETM_C1": "5e83a507d6aaa3db",
+    "LANDSAT_8_C1": "5e83d0b84df8d8c2"
 }
 
 
@@ -91,6 +91,6 @@ class EarthExplorer(object):
         dataset = guess_dataset(scene_id)
         if is_product_id(scene_id):
             scene_id = self.api.lookup(dataset, [scene_id], inverse=True)[0]
-        url = EE_DOWNLOAD_URL.format(folder=EE_FOLDER[dataset], sid=scene_id)
+        url = EE_DOWNLOAD_URL.format(dataset_id=DATASETS[dataset], scene_id=scene_id)
         filename = self._download(url, output_dir)
         return filename
