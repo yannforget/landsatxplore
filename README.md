@@ -28,7 +28,7 @@ Downloading three Landsat scenes from different datasets in the current director
 landsatxplore download LT51960471995178MPS00 LC80390222013076EDC00 LC82150682015350LGN01
 ```
 
-To use the package, Earth Explorer credentials are required ([registration](https://ers.cr.usgs.gov/register/)).
+To use the package, Earth Explorer credentials are required ([registration](https://ers.cr.usgs.gov/register)).
 
 # Installation
 
