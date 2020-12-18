@@ -19,7 +19,8 @@ EE_DOWNLOAD_URL = "https://earthexplorer.usgs.gov/download/{dataset_id}/{scene_i
 DATASETS = {
     "LANDSAT_TM_C1": "5e83d08fd9932768",
     "LANDSAT_ETM_C1": "5e83a507d6aaa3db",
-    "LANDSAT_8_C1": "5e83d0b84df8d8c2"
+    "LANDSAT_8_C1": "5e83d0b84df8d8c2",
+    "SENTINEL_2A": "5e83a42c6eba8084" # also contains Sentinel_2B data
 }
 
 

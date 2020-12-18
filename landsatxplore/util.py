@@ -12,7 +12,10 @@ def guess_dataset(identifier):
     """Guess data set based on a scene identifier."""
     if is_product_id(identifier):
         sat = int(identifier[3])
+    # S2 data only has numbers in entity_id
+    elif identifier.isdecimal():
+        sat = 1
     else:
         sat = int(identifier[2])
-    datasets = {5: 'LANDSAT_TM_C1', 7: 'LANDSAT_ETM_C1', 8: 'LANDSAT_8_C1'}
+    datasets = {1: "SENTINEL_2A", 5: 'LANDSAT_TM_C1', 7: 'LANDSAT_ETM_C1', 8: 'LANDSAT_8_C1'}
     return datasets[sat]

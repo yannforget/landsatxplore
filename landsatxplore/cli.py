@@ -10,7 +10,7 @@ import click
 from landsatxplore.api import API
 from landsatxplore.earthexplorer import EarthExplorer
 
-DATASETS = ['LANDSAT_TM_C1', 'LANDSAT_ETM_C1', 'LANDSAT_8_C1']
+DATASETS = ['LANDSAT_TM_C1', 'LANDSAT_ETM_C1', 'LANDSAT_8_C1', 'SENTINEL_2A']
 
 
 @click.group()
@@ -88,7 +88,7 @@ def search(username, password, dataset, location, bbox, clouds, start, end, outp
               envvar='LANDSATXPLORE_USERNAME')
 @click.option('--password', '-p', type=click.STRING, help='EarthExplorer password.',
               envvar='LANDSATXPLORE_PASSWORD')
-@click.option('--output', '-o', type=click.Path(exists=True, dir_okay=True), 
+@click.option('--output', '-o', type=click.Path(exists=True, dir_okay=True),
               default='.', help='Output directory.')
 @click.argument('scenes', type=click.STRING, nargs=-1)
 def download(username, password, output, scenes):
