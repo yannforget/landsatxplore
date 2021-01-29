@@ -70,7 +70,7 @@ class API(object):
         Parameters
         ----------
         dataset : str
-            LANDSAT_TM_C1, LANDSAT_ETM_C1, or LANDSAT_8_C1.
+            LANDSAT_TM_C1, LANDSAT_ETM_C1, LANDSAT_8_C1 or SENTINEL_2A.
         latitude : float, optional
             Latitude of the point of interest.
         longitude : float, optional

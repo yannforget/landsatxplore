@@ -17,5 +17,6 @@ def guess_dataset(identifier):
         sat = 1
     else:
         sat = int(identifier[2])
-    datasets = {1: "SENTINEL_2A", 5: 'LANDSAT_TM_C1', 7: 'LANDSAT_ETM_C1', 8: 'LANDSAT_8_C1'}
+    datasets = {1: "SENTINEL_2A", 5: 'LANDSAT_TM_C1', 7: 'LANDSAT_ETM_C1',
+                8: 'LANDSAT_8_C1'}
     return datasets[sat]

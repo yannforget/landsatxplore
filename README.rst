@@ -7,8 +7,8 @@ download `Landsat
 Collections <https://landsat.usgs.gov/landsat-collections>`__ scenes
 through a command-line interface or a Python API.
 
-It supports three data sets: ``LANDSAT_TM_C1``, ``LANDSAT_ETM_C1`` and
-``LANDSAT_8_C1``.
+It supports four data sets: ``LANDSAT_TM_C1``, ``LANDSAT_ETM_C1``,
+``LANDSAT_8_C1`` and ``SENTINEL_2A``.
 
 Installation
 ============
@@ -53,8 +53,8 @@ Searching
     Options:
       --username TEXT                 EarthExplorer username.
       --password TEXT                 EarthExplorer password.
-      --dataset [LANDSAT_TM_C1|LANDSAT_ETM_C1|LANDSAT_8_C1]
-                                      Landsat data set.
+      --dataset [LANDSAT_TM_C1|LANDSAT_ETM_C1|LANDSAT_8_C1|SENTINEL_2A]
+                                      EO data set.
       --location FLOAT...             Point of interest (latitude, longitude).
       --bbox FLOAT...                 Bounding box (xmin, ymin, xmax, ymax).
       --clouds INTEGER                Max. cloud cover (1-100).
