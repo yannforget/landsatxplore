@@ -37,7 +37,7 @@ def spatial_filter(xmin, ymin, xmax=None, ymax=None):
         Max. x coordinate (max longitude).
     ymax : float, optional
         Max. y coordinate (max latitude).
-    
+
     Returns
     -------
     spatial_filter : dict
@@ -46,8 +46,8 @@ def spatial_filter(xmin, ymin, xmax=None, ymax=None):
     if not xmax and not ymax:
         xmax = xmin + 0.1
         ymax = ymin + 0.1
-    lower_left = coordinate(xmin, ymin)
-    upper_right = coordinate(xmax, ymax)
+    lower_left = coordinate(ymin, xmin)
+    upper_right = coordinate(ymax, xmax)
     return {
         'filterType': 'mbr',
         'lowerLeft': lower_left,
@@ -64,7 +64,7 @@ def temporal_filter(start_date, end_date=None):
         ISO 8601 formatted date.
     end_date : str, optional
         ISO 8601 formatted date.
-    
+
     Returns
     -------
     temporal_filter : dict

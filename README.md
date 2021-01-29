@@ -4,7 +4,7 @@
 
 The **landsatxplore** Python package provides an interface to the [EarthExplorer](http://earthexplorer.usgs.gov/) portal to search and download [Landsat Collections](https://landsat.usgs.gov/landsat-collections) scenes through a command-line interface or a Python API.
 
-It supports three data sets: `LANDSAT_TM_C1`, `LANDSAT_ETM_C1` and `LANDSAT_8_C1`.
+It supports four data sets: `LANDSAT_TM_C1`, `LANDSAT_ETM_C1`, `LANDSAT_8_C1`, and `SENTINEL_2A`.
 
 # Quick start
 
@@ -84,8 +84,8 @@ Usage: landsatxplore search [OPTIONS]
 Options:
   -u, --username TEXT             EarthExplorer username.
   -p, --password TEXT             EarthExplorer password.
-  -d, --dataset [LANDSAT_TM_C1|LANDSAT_ETM_C1|LANDSAT_8_C1]
-                                  Landsat data set.
+  -d, --dataset [LANDSAT_TM_C1|LANDSAT_ETM_C1|LANDSAT_8_C1|SENTINEL_2A]
+                                  EO data set.
   -l, --location FLOAT...         Point of interest (latitude, longitude).
   -b, --bbox FLOAT...             Bounding box (xmin, ymin, xmax, ymax).
   -c, --clouds INTEGER            Max. cloud cover (1-100).
