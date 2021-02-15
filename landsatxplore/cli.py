@@ -90,7 +90,7 @@ def search(username, password, dataset, location, bbox, clouds, start, end, outp
               envvar='LANDSATXPLORE_PASSWORD')
 @click.option('--output', '-o', type=click.Path(exists=True, dir_okay=True),
               default='.', help='Output directory.')
-@click.option('--timeout', '-t', type=click.INT, default=60,
+@click.option('--timeout', '-t', type=click.INT, default=300,
               help='Download timeout in seconds.')
 @click.argument('scenes', type=click.STRING, nargs=-1)
 def download(username, password, output, timeout, scenes):

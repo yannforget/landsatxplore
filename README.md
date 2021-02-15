@@ -112,7 +112,7 @@ Options:
   -u, --username TEXT    EarthExplorer username.
   -p, --password TEXT    EarthExplorer password.
   -o, --output PATH      Output directory (default to current).
-  -t, --timeout INTEGER  Download timeout in seconds (default 60s).
+  -t, --timeout INTEGER  Download timeout in seconds (default 300s).
   --help                 Show this message and exit.
 ```
 

@@ -89,7 +89,7 @@ class EarthExplorer(object):
                 'Connection timeout after {} seconds.'.format(timeout))
         return local_filename
 
-    def download(self, scene_id, output_dir, timeout=60):
+    def download(self, scene_id, output_dir, timeout=300):
         """Download a Landsat scene given its identifier and an output
         directory.
         """
