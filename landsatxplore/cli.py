@@ -90,15 +90,17 @@ def search(username, password, dataset, location, bbox, clouds, start, end, outp
               envvar='LANDSATXPLORE_PASSWORD')
 @click.option('--output', '-o', type=click.Path(exists=True, dir_okay=True),
               default='.', help='Output directory.')
+@click.option('--timeout', '-t', type=click.INT, default=60,
+              help='Download timeout in seconds.')
 @click.argument('scenes', type=click.STRING, nargs=-1)
-def download(username, password, output, scenes):
+def download(username, password, output, timeout, scenes):
     """Download one or several Landsat scenes."""
     ee = EarthExplorer(username, password)
     output_dir = os.path.abspath(output)
     for scene in scenes:
         if not ee.logged_in():
             ee = EarthExplorer(username, password)
-        ee.download(scene, output_dir)
+        ee.download(scene, output_dir, timeout)
     ee.logout()
 
 

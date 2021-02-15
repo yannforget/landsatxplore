@@ -73,10 +73,12 @@ Downloading
       Download one or several Landsat scenes.
 
     Options:
-      -u, --username TEXT  EarthExplorer username.
-      -p, --password TEXT  EarthExplorer password.
-      -o, --output PATH    Output directory.
-      --help               Show this message and exit.
+      -u, --username TEXT    EarthExplorer username.
+      -p, --password TEXT    EarthExplorer password.
+      -o, --output PATH      Output directory (default to current).
+      -t, --timeout INTEGER  Download timeout in seconds (default 60s).
+      --help                 Show this message and exit.
+
 
 API
 ---

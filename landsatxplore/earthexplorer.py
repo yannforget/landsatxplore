@@ -2,6 +2,7 @@
 
 import os
 import re
+import time
 import shutil
 
 import requests
@@ -70,22 +71,26 @@ class EarthExplorer(object):
         """Log out from Earth Explorer."""
         self.session.get(EE_LOGOUT_URL)
 
-    def _download(self, url, output_dir, chunk_size=1024):
+    def _download(self, url, output_dir, timeout, chunk_size=1024):
         """Download remote file given its URL."""
-        with self.session.get(url, stream=True, allow_redirects=True) as r:
-            file_size = int(r.headers.get("Content-Length"))
-            with tqdm(total=file_size, unit_scale=True, unit='B', unit_divisor=1024) as pbar:
-                local_filename = r.headers['Content-Disposition'].split('=')[-1]
-                local_filename = local_filename.replace("\"", "")
-                local_filename = os.path.join(output_dir, local_filename)
-                with open(local_filename, 'wb') as f:
-                    for chunk in r.iter_content(chunk_size=chunk_size):
-                        if chunk:
-                            f.write(chunk)
-                            pbar.update(chunk_size)
+        try:
+            with self.session.get(url, stream=True, allow_redirects=True, timeout=timeout) as r:
+                file_size = int(r.headers.get("Content-Length"))
+                with tqdm(total=file_size, unit_scale=True, unit='B', unit_divisor=1024) as pbar:
+                    local_filename = r.headers['Content-Disposition'].split('=')[-1]
+                    local_filename = local_filename.replace("\"", "")
+                    local_filename = os.path.join(output_dir, local_filename)
+                    with open(local_filename, 'wb') as f:
+                        for chunk in r.iter_content(chunk_size=chunk_size):
+                            if chunk:
+                                f.write(chunk)
+                                pbar.update(chunk_size)
+        except requests.exceptions.Timeout:
+            raise EarthExplorerError(
+                'Connection timeout after {} seconds.'.format(timeout))
         return local_filename
 
-    def download(self, scene_id, output_dir):
+    def download(self, scene_id, output_dir, timeout=60):
         """Download a Landsat scene given its identifier and an output
         directory.
         """
@@ -94,5 +99,5 @@ class EarthExplorer(object):
         if is_product_id(scene_id):
             scene_id = self.api.lookup(dataset, [scene_id], inverse=True)[0]
         url = EE_DOWNLOAD_URL.format(dataset_id=DATASETS[dataset], scene_id=scene_id)
-        filename = self._download(url, output_dir)
+        filename = self._download(url, output_dir, timeout=timeout)
         return filename
