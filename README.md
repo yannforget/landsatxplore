@@ -109,10 +109,11 @@ Usage: landsatxplore download [OPTIONS] [SCENES]...
   Download one or several Landsat scenes.
 
 Options:
-  -u, --username TEXT  EarthExplorer username.
-  -p, --password TEXT  EarthExplorer password.
-  -o, --output PATH    Output directory (default to current).
-  --help               Show this message and exit.
+  -u, --username TEXT    EarthExplorer username.
+  -p, --password TEXT    EarthExplorer password.
+  -o, --output PATH      Output directory (default to current).
+  -t, --timeout INTEGER  Download timeout in seconds (default 300s).
+  --help                 Show this message and exit.
 ```
 
 ## API
