@@ -10,7 +10,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='landsatxplore',
-    version='0.9',
+    version='0.10',
     description='Search and download Landsat scenes from EarthExplorer.',
     long_description=long_description,
     long_description_content_type='text/markdown',
