@@ -1,0 +1,151 @@
+interactions:
+- request:
+    body: '{"listId": "pjnonsonuw", "datasetName": "landsat_tm_c1", "idField": "displayId",
+      "entityIds": ["LT05_L1GS_173058_20111028_20161005_01_T2", "LT05_L1GS_173057_20010407_20171209_01_T2"]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '183'
+      Cookie:
+      - m2m-production=hjgetrgraiinuva8id13b2aqcc
+      User-Agent:
+      - python-requests/2.25.1
+      X-Auth-Token:
+      - eyJjaWQiOjgyMTM4OSwicyI6IjE2MTQwNzg1MDEiLCJyIjo1ODQsInAiOlsiZG93bmxvYWQiLCJvcmRlciJdfQ==
+    method: GET
+    uri: https://m2m.cr.usgs.gov/api/api/json/stable/scene-list-add
+  response:
+    body:
+      string: '{"requestId": 209406063, "version": "stable", "sessionId": 44801471,
+        "data": 2, "errorCode": null, "errorMessage": null}'
+    headers:
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '120'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 23 Feb 2021 11:28:42 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"listId": "pjnonsonuw"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '24'
+      Cookie:
+      - m2m-production=hjgetrgraiinuva8id13b2aqcc
+      User-Agent:
+      - python-requests/2.25.1
+      X-Auth-Token:
+      - eyJjaWQiOjgyMTM4OSwicyI6IjE2MTQwNzg1MDEiLCJyIjo1ODQsInAiOlsiZG93bmxvYWQiLCJvcmRlciJdfQ==
+    method: GET
+    uri: https://m2m.cr.usgs.gov/api/api/json/stable/scene-list-get
+  response:
+    body:
+      string: '{"requestId": 209406066, "version": "stable", "sessionId": 44801471,
+        "data": [{"entityId":"LT51730582011301MLK00","datasetName":"landsat_tm_c1"},{"entityId":"LT51730572001097LBG00","datasetName":"landsat_tm_c1"}],
+        "errorCode": null, "errorMessage": null}'
+    headers:
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '254'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 23 Feb 2021 11:28:42 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"listId": "pjnonsonuw"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '24'
+      Cookie:
+      - m2m-production=hjgetrgraiinuva8id13b2aqcc
+      User-Agent:
+      - python-requests/2.25.1
+      X-Auth-Token:
+      - eyJjaWQiOjgyMTM4OSwicyI6IjE2MTQwNzg1MDEiLCJyIjo1ODQsInAiOlsiZG93bmxvYWQiLCJvcmRlciJdfQ==
+    method: GET
+    uri: https://m2m.cr.usgs.gov/api/api/json/stable/scene-list-remove
+  response:
+    body:
+      string: '{"requestId": 209406067, "version": "stable", "sessionId": 44801471,
+        "data": null, "errorCode": null, "errorMessage": null}'
+    headers:
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '123'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 23 Feb 2021 11:28:42 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

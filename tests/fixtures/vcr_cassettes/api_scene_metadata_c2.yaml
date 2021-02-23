@@ -1,0 +1,117 @@
+interactions:
+- request:
+    body: '{"datasetName": "landsat_tm_c2_l1", "entityId": "LT51730582011301MLK00",
+      "metadataType": "full"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '96'
+      Cookie:
+      - m2m-production=hjgetrgraiinuva8id13b2aqcc
+      User-Agent:
+      - python-requests/2.25.1
+      X-Auth-Token:
+      - eyJjaWQiOjgyMTM4OSwicyI6IjE2MTQwNzg1MDEiLCJyIjo1ODQsInAiOlsiZG93bmxvYWQiLCJvcmRlciJdfQ==
+    method: GET
+    uri: https://m2m.cr.usgs.gov/api/api/json/stable/scene-metadata
+  response:
+    body:
+      string: '{"requestId": 209407868, "version": "stable", "sessionId": 44801471,
+        "data": {"browse":[{"id":"5e9e83b68ba2f3d4","browseRotationEnabled":false,"browseName":"Reflective
+        Browse","browsePath":"https:\/\/landsatlook.usgs.gov\/gen-browse?size=rrb&type=refl&product_id=LT05_L1TP_173058_20111028_20200820_02_T1","overlayPath":"https:\/\/landsatlook.usgs.gov\/dynamic-tiler\/scenes\/LT05_L1TP_173058_20111028_20200820_02_T1\/tiles\/{z}\/{x}\/{y}.png?layer=natural_color","overlayType":"ls_chs","thumbnailPath":"https:\/\/landsatlook.usgs.gov\/gen-browse?size=thumb&type=refl&product_id=LT05_L1TP_173058_20111028_20200820_02_T1"},{"id":"5e9e83d0725f2079","browseRotationEnabled":false,"browseName":"Thermal
+        Browse","browsePath":"https:\/\/landsatlook.usgs.gov\/gen-browse?size=rrb&type=tir&product_id=LT05_L1TP_173058_20111028_20200820_02_T1","overlayPath":"https:\/\/landsatlook.usgs.gov\/dynamic-tiler\/scenes\/LT05_L1TP_173058_20111028_20200820_02_T1\/tiles\/{z}\/{x}\/{y}.png?layer=thermal","overlayType":"ls_chs","thumbnailPath":"https:\/\/landsatlook.usgs.gov\/gen-browse?size=thumb&type=tir&product_id=LT05_L1TP_173058_20111028_20200820_02_T1"},{"id":"5e9e859b7a3f8c77","browseRotationEnabled":false,"browseName":"Quality
+        Browse","browsePath":"https:\/\/landsatlook.usgs.gov\/gen-browse?size=rrb&type=qb&product_id=LT05_L1TP_173058_20111028_20200820_02_T1","overlayPath":"https:\/\/landsatlook.usgs.gov\/dynamic-tiler\/scenes\/LT05_L1TP_173058_20111028_20200820_02_T1\/tiles\/{z}\/{x}\/{y}.png?layer=qa","overlayType":"ls_chs","thumbnailPath":"https:\/\/landsatlook.usgs.gov\/gen-browse?size=thumb&type=qb&product_id=LT05_L1TP_173058_20111028_20200820_02_T1"}],"cloudCover":"85.00","entityId":"LT51730582011301MLK00","displayId":"LT05_L1TP_173058_20111028_20200820_02_T1","orderingId":"LT51730582011301MLK00","metadata":[{"id":"5e83d0a04f1d10c9","fieldName":"Landsat
+        Product Identifier L1","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#landsat_product_id","value":"LT05_L1TP_173058_20111028_20200820_02_T1"},{"id":"5e83d0a023b53b6","fieldName":"Landsat
+        Scene Identifier","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#landsat_scene_id","value":"LT51730582011301MLK00"},{"id":"5e83d0a056bea8fb","fieldName":"Date
+        Acquired","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#acquisition_date","value":"2011\/10\/28"},{"id":"5e83d0a085e70adc","fieldName":"Collection
+        Category","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#collection_category","value":"T1"},{"id":"5e83d0a0d7f6f2e1","fieldName":"Collection
+        Number","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#collection_number","value":2},{"id":"5e83d0a04ca0fc2a","fieldName":"Sensor
+        Mode","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#sensor_mode","value":"BUMPER"},{"id":"5e83d0a0ce46dfb6","fieldName":"WRS
+        Path","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#wrs_path","value":"
+        173"},{"id":"5e83d0a03b8c62b4","fieldName":"WRS Row","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#wrs_row","value":"
+        058"},{"id":"5e83d0a0b5462684","fieldName":"Full Partial Scene","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#full_partial_scene","value":"FULL"},{"id":"5e83d0a098844da8","fieldName":"Date
+        Product Generated L1","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#date_l1_generated","value":"2020\/08\/20"},{"id":"5e83d0a03a366781","fieldName":"Start
+        Time","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#start_time","value":"2011:301:08:00:33.5086900"},{"id":"5e83d0a0e745e55c","fieldName":"Stop
+        Time","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#stop_time","value":"2011:301:08:01:00.1216300"},{"id":"5e83d0a040b5ab43","fieldName":"Station
+        Identifier","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#distribution_site","value":"MLK"},{"id":"5e83d0a0847f8f06","fieldName":"Day\/Night
+        Indicator","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#day_or_night","value":"DAY"},{"id":"5e83d0a0373f9c71","fieldName":"Ground
+        Control Points Model","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#ground_control_points_model","value":50},{"id":"5faeac59964dfe3","fieldName":"Land
+        Cloud Cover","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#c","value":"  85.00"},{"id":"5faeac835b5981c3","fieldName":"Scene
+        Cloud Cover L1","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#c","value":"  85.00"},{"id":"5e83d0a055401c4","fieldName":"Ground
+        Control Points Version","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#ground_control_points_version","value":5},{"id":"5e83d0a03498d908","fieldName":"Geometric
+        RMSE Model","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#geometric_rmse_model","value":"    4.596"},{"id":"5e83d0a089ad14ee","fieldName":"Geometric
+        RMSE Model X","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#geometric_rmse_model_x","value":"    2.995"},{"id":"5e83d0a042fa7a86","fieldName":"Geometric
+        RMSE Model Y","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#geometric_rmse_model_y      ","value":"    3.486"},{"id":"5e83d0a0b28ebbfc","fieldName":"Sensor
+        Anomalies","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#sensor_anomalies","value":"NONE"},{"id":"5e83d0a0c68c9898","fieldName":"Data
+        Anomaly","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#data_anomaly","value":null},{"id":"5e83d0a0ab21a9ef","fieldName":"Image
+        Quality","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#image_quality_landsat_8-9","value":9},{"id":"5e83d0a0a28b3ada","fieldName":"Gain
+        Change","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#gain_change_band_1","value":"N"},{"id":"5e83d0a0cdd29e07","fieldName":"Processing
+        Software Version","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#processing_software_version","value":"LPGS_15.3.1c"},{"id":"5e83d0a0b6686289","fieldName":"Sun
+        Elevation L1","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#sun_elevation_lora","value":"
+        60.10983337"},{"id":"5e83d0a0cf7b9eaf","fieldName":"Sun Azimuth L1","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#sun_azimuth_lora","value":"
+        122.76115676"},{"id":"5e83d0a0f345572a","fieldName":"Data Type L1","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#data_type_l1","value":"TM_L1TP"},{"id":"5e83d0a074985cdf","fieldName":"Sensor
+        Identifier","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#sensor_id","value":"TM"},{"id":"5e83d0a057943c7f","fieldName":"Satellite","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#satellite","value":5},{"id":"5e83d0a0aaa927c8","fieldName":"Ephemeris
+        Type","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#ephemeris_type","value":"DEFINITIVE"},{"id":"5e83d0a068570e10","fieldName":"Reflective
+        Lines","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#reflective_lines                  ","value":6951},{"id":"5e83d0a0a2eb5ce3","fieldName":"Reflective
+        Samples","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#reflective_samples","value":7931},{"id":"5e83d0a0b7055327","fieldName":"Thermal
+        Lines","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#thermal_lines","value":6951},{"id":"5e83d0a0d845bd24","fieldName":"Thermal
+        Samples","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#thermal_samples","value":7931},{"id":"5e83d0a03fd242db","fieldName":"Product
+        Map Projection L1","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#map_projection_l1","value":"UTM"},{"id":"5e83d0a091c98da7","fieldName":"UTM
+        Zone","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#utm_zone","value":36},{"id":"5e83d0a07c845cec","fieldName":"Datum","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#datum","value":"WGS84"},{"id":"5e83d0a076d969b4","fieldName":"Ellipsoid","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#ellipsoid","value":"WGS84"},{"id":"5e83d0a039d0b845","fieldName":"Grid
+        Cell Size Reflective","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#grid_cell_size_reflective   ","value":"30.00"},{"id":"5e83d0a01327a441","fieldName":"Grid
+        Cell Size Thermal","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#grid_cell_size_thermal","value":"30.00"},{"id":"5e83d0a06c6d031e","fieldName":"Calibration
+        Parameter File","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#cpf_name","value":"LT05CPF_20111001_20111231_02.01"},{"id":"5e83d0a0fc3826dd","fieldName":"Scene
+        Center Lat DMS","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_degrees","value":"2&deg;53''39.98\"N"},{"id":"5e83d0a085db8d62","fieldName":"Scene
+        Center Long DMS","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_degrees","value":"30&deg;17''34.19\"E"},{"id":"5e83d0a03fbc8f7b","fieldName":"Corner
+        Upper Left Lat DMS","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_degrees","value":"3&deg;48''35.10\"N"},{"id":"5e83d0a0741b2603","fieldName":"Corner
+        Upper Left Long DMS","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_degrees","value":"29&deg;38''17.70\"E"},{"id":"5e83d0a0d226059c","fieldName":"Corner
+        Upper Right Lat DMS","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_degrees","value":"3&deg;34''12.25\"N"},{"id":"5e83d0a0b06e05a6","fieldName":"Corner
+        Upper Right Long DMS","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_degrees","value":"31&deg;17''10.97\"E"},{"id":"5e83d0a0cb5bc1a9","fieldName":"Corner
+        Lower Left Lat DMS","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_degrees","value":"2&deg;13''04.91\"N"},{"id":"5e83d0a02f044080","fieldName":"Corner
+        Lower Left Long DMS","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_degrees","value":"29&deg;18''01.40\"E"},{"id":"5e83d0a037e20805","fieldName":"Corner
+        Lower Right Lat DMS","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_degrees","value":"1&deg;58''43.21\"N"},{"id":"5e83d0a037fab473","fieldName":"Corner
+        Lower Right Long DMS","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_degrees","value":"30&deg;56''46.61\"E"},{"id":"5e83d0a0e2bdf52f","fieldName":"Scene
+        Center Latitude","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_decimal","value":"  2.89444"},{"id":"5e83d0a053cd49f4","fieldName":"Scene
+        Center Longitude","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_decimal","value":"  30.29283"},{"id":"5e83d0a04c8ad54","fieldName":"Corner
+        Upper Left Latitude","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_decimal","value":"  3.80975"},{"id":"5e83d0a07f8c073d","fieldName":"Corner
+        Upper Left Longitude","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_decimal","value":"  29.63825"},{"id":"5e83d0a06b9112e5","fieldName":"Corner
+        Upper Right Latitude","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_decimal","value":"  3.57007"},{"id":"5e83d0a0f8d2758f","fieldName":"Corner
+        Upper Right Longitude","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_decimal","value":"  31.28638"},{"id":"5e83d0a05e6872ef","fieldName":"Corner
+        Lower Left Latitude","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_decimal","value":"  2.21803"},{"id":"5e83d0a0831a30eb","fieldName":"Corner
+        Lower Left Longitude","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_decimal","value":"  29.30039"},{"id":"5e83d0a075637f55","fieldName":"Corner
+        Lower Right Latitude","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_decimal","value":"  1.97867"},{"id":"5e83d0a055218a20","fieldName":"Corner
+        Lower Right Longitude","dictionaryLink":"https:\/\/lta.cr.usgs.gov\/DD\/landsat_c2_dictionary.html#coordinates_decimal","value":"  30.94628"}],"hasCustomizedMetadata":false,"options":{"bulk":true,"download":true,"order":false,"secondary":false},"selected":null,"spatialBounds":{"type":"Polygon","coordinates":[[[29.30039,1.97867],[29.30039,3.80975],[31.28638,3.80975],[31.28638,1.97867],[29.30039,1.97867]]]},"spatialCoverage":{"type":"Polygon","coordinates":[[[29.30039,2.21803],[30.94628,1.97867],[31.28638,3.57007],[29.63825,3.80975],[29.30039,2.21803]]]},"temporalCoverage":{"endDate":"2011-10-28
+        00:00:00","startDate":"2011-10-28 00:00:00"},"publishDate":"2011-10-28T00:00:00"},
+        "errorCode": null, "errorMessage": null}'
+    headers:
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 23 Feb 2021 11:32:05 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

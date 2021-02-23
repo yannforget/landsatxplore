@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: '{"datasetName": "landsat_8_c1", "sceneFilter": {"acquisitionFilter": {"start":
+      "2018-01-01", "end": "2018-01-07"}, "spatialFilter": {"filterType": "mbr", "lowerLeft":
+      {"longitude": 4.38, "latitude": 50.85}, "upperRight": {"longitude": 4.38, "latitude":
+      50.85}}}, "maxResults": 5}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '279'
+      Cookie:
+      - m2m-production=hjgetrgraiinuva8id13b2aqcc
+      User-Agent:
+      - python-requests/2.25.1
+      X-Auth-Token:
+      - eyJjaWQiOjgyMTM4OSwicyI6IjE2MTQwNzg1MDEiLCJyIjo1ODQsInAiOlsiZG93bmxvYWQiLCJvcmRlciJdfQ==
+    method: GET
+    uri: https://m2m.cr.usgs.gov/api/api/json/stable/scene-search
+  response:
+    body:
+      string: '{"requestId": 209412978, "version": "stable", "sessionId": 44801471,
+        "data": {"results": [{"browse":[{"id":"5e83d0b86f2c3061","browseRotationEnabled":null,"browseName":"LandsatLook
+        Natural Color Preview Image","browsePath":"https:\/\/ims.cr.usgs.gov\/browse\/landsat_8_c1\/2018\/199\/024\/LC08_L1GT_199024_20180106_20180119_01_T2.jpg","overlayPath":"https:\/\/ims.cr.usgs.gov\/wms\/landsat_8_c1?sceneId=lc81990242018006lgn00","overlayType":"dmid_wms","thumbnailPath":"https:\/\/ims.cr.usgs.gov\/thumbnail\/landsat_8_c1\/2018\/199\/024\/LC08_L1GT_199024_20180106_20180119_01_T2.jpg"},{"id":"5e83d0b85da62c02","browseRotationEnabled":null,"browseName":"LandsatLook
+        Thermal Preview Image","browsePath":"https:\/\/ims.cr.usgs.gov\/browse\/landsat_8_c1\/2018\/199\/024\/LC08_L1GT_199024_20180106_20180119_01_T2_TIR.jpg","overlayPath":"https:\/\/ims.cr.usgs.gov\/wms\/landsat_8_c1?sceneId=lc81990242018006lgn00_tir","overlayType":"dmid_wms","thumbnailPath":"https:\/\/ims.cr.usgs.gov\/thumbnail\/landsat_8_c1\/2018\/199\/024\/LC08_L1GT_199024_20180106_20180119_01_T2_TIR.jpg"},{"id":"5e83d0b8b814a0e6","browseRotationEnabled":null,"browseName":"LandsatLook
+        Quality Preview Image","browsePath":"https:\/\/ims.cr.usgs.gov\/browse\/landsat_8_c1\/2018\/199\/024\/LC08_L1GT_199024_20180106_20180119_01_T2_QB.jpg","overlayPath":"https:\/\/ims.cr.usgs.gov\/wms\/landsat_8_c1?sceneId=lc81990242018006lgn00_qb","overlayType":"dmid_wms","thumbnailPath":"https:\/\/ims.cr.usgs.gov\/thumbnail\/landsat_8_c1\/2018\/199\/024\/LC08_L1GT_199024_20180106_20180119_01_T2_QB.jpg"}],"cloudCover":"99.27","entityId":"LC81990242018006LGN00","displayId":"LC08_L1GT_199024_20180106_20180119_01_T2","orderingId":null,"metadata":[],"hasCustomizedMetadata":null,"options":{"bulk":true,"download":true,"order":true,"secondary":false},"selected":{"bulk":false,"compare":false,"order":false},"spatialBounds":{"type":"Polygon","coordinates":[[[1.83852,50.60485],[1.83852,52.76447],[5.27262,52.76447],[5.27262,50.60485],[1.83852,50.60485]]]},"spatialCoverage":{"type":"Polygon","coordinates":[[[1.83852,51.06562],[4.46192,50.60485],[5.27262,52.29553],[2.55265,52.76447],[1.83852,51.06562]]]},"temporalCoverage":{"endDate":"2018-01-06
+        00:00:00","startDate":"2018-01-06 00:00:00"},"publishDate":"2018-01-06 10:37:00"},{"browse":[{"id":"5e83d0b86f2c3061","browseRotationEnabled":null,"browseName":"LandsatLook
+        Natural Color Preview Image","browsePath":"https:\/\/ims.cr.usgs.gov\/browse\/landsat_8_c1\/2018\/199\/025\/LC08_L1GT_199025_20180106_20180119_01_T2.jpg","overlayPath":"https:\/\/ims.cr.usgs.gov\/wms\/landsat_8_c1?sceneId=lc81990252018006lgn00","overlayType":"dmid_wms","thumbnailPath":"https:\/\/ims.cr.usgs.gov\/thumbnail\/landsat_8_c1\/2018\/199\/025\/LC08_L1GT_199025_20180106_20180119_01_T2.jpg"},{"id":"5e83d0b85da62c02","browseRotationEnabled":null,"browseName":"LandsatLook
+        Thermal Preview Image","browsePath":"https:\/\/ims.cr.usgs.gov\/browse\/landsat_8_c1\/2018\/199\/025\/LC08_L1GT_199025_20180106_20180119_01_T2_TIR.jpg","overlayPath":"https:\/\/ims.cr.usgs.gov\/wms\/landsat_8_c1?sceneId=lc81990252018006lgn00_tir","overlayType":"dmid_wms","thumbnailPath":"https:\/\/ims.cr.usgs.gov\/thumbnail\/landsat_8_c1\/2018\/199\/025\/LC08_L1GT_199025_20180106_20180119_01_T2_TIR.jpg"},{"id":"5e83d0b8b814a0e6","browseRotationEnabled":null,"browseName":"LandsatLook
+        Quality Preview Image","browsePath":"https:\/\/ims.cr.usgs.gov\/browse\/landsat_8_c1\/2018\/199\/025\/LC08_L1GT_199025_20180106_20180119_01_T2_QB.jpg","overlayPath":"https:\/\/ims.cr.usgs.gov\/wms\/landsat_8_c1?sceneId=lc81990252018006lgn00_qb","overlayType":"dmid_wms","thumbnailPath":"https:\/\/ims.cr.usgs.gov\/thumbnail\/landsat_8_c1\/2018\/199\/025\/LC08_L1GT_199025_20180106_20180119_01_T2_QB.jpg"}],"cloudCover":"100.00","entityId":"LC81990252018006LGN00","displayId":"LC08_L1GT_199025_20180106_20180119_01_T2","orderingId":null,"metadata":[],"hasCustomizedMetadata":null,"options":{"bulk":true,"download":true,"order":true,"secondary":false},"selected":{"bulk":false,"compare":false,"order":false},"spatialBounds":{"type":"Polygon","coordinates":[[[1.27532,49.19587],[1.27532,51.34932],[4.59477,51.34932],[4.59477,49.19587],[1.27532,49.19587]]]},"spatialCoverage":{"type":"Polygon","coordinates":[[[1.27532,49.64759],[3.8252,49.19587],[4.59477,50.89046],[1.95514,51.34932],[1.27532,49.64759]]]},"temporalCoverage":{"endDate":"2018-01-06
+        00:00:00","startDate":"2018-01-06 00:00:00"},"publishDate":"2018-01-06 10:37:00"}],"recordsReturned":
+        2,"totalHits": 2,"isCustomized": false,"numExcluded": 0,"startingNumber":
+        1,"nextRecord": 2}, "errorCode": null, "errorMessage": null}'
+    headers:
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '4620'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 23 Feb 2021 11:39:04 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1
