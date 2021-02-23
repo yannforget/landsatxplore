@@ -130,6 +130,5 @@ class EarthExplorer(object):
         url = EE_DOWNLOAD_URL.format(
             data_product_id=DATA_PRODUCTS[dataset], scene_id=scene_id
         )
-        print(url)
         filename = self._download(url, output_dir, timeout=timeout)
         return filename
