@@ -145,7 +145,7 @@ def download(username, password, output, timeout, scenes):
     for scene in scenes:
         if not ee.logged_in():
             ee = EarthExplorer(username, password)
-        ee.download(scene, output_dir, timeout)
+        ee.download(scene, output_dir, timeout=timeout)
     ee.logout()
 
 
