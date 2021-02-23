@@ -24,6 +24,7 @@ python = "^3.7"
 requests = "*"
 tqdm = "*"
 click = "*"
+shapely = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
