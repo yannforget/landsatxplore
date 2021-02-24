@@ -9,6 +9,7 @@ import click
 
 from landsatxplore.api import API
 from landsatxplore.earthexplorer import EarthExplorer
+from landsatxplore.errors import LandsatxploreError
 
 DATASETS = [
     "landsat_tm_c1",
@@ -138,6 +139,7 @@ def search(
     help="EarthExplorer password.",
     envvar="LANDSATXPLORE_PASSWORD",
 )
+@click.option("--dataset", "-d", type=click.STRING, required=False, help="Dataset")
 @click.option(
     "--output",
     "-o",
@@ -149,14 +151,16 @@ def search(
     "--timeout", "-t", type=click.INT, default=300, help="Download timeout in seconds."
 )
 @click.argument("scenes", type=click.STRING, nargs=-1)
-def download(username, password, output, timeout, scenes):
+def download(username, password, dataset, output, timeout, scenes):
     """Download one or several Landsat scenes."""
     ee = EarthExplorer(username, password)
     output_dir = os.path.abspath(output)
+    if dataset and dataset not in DATASETS:
+        raise LandsatxploreError(f"`{dataset}` is not a supported dataset.")
     for scene in scenes:
         if not ee.logged_in():
             ee = EarthExplorer(username, password)
-        ee.download(scene, output_dir, timeout=timeout)
+        ee.download(scene, output_dir, dataset=dataset, timeout=timeout)
     ee.logout()
 
 
