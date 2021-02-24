@@ -10,7 +10,18 @@ import click
 from landsatxplore.api import API
 from landsatxplore.earthexplorer import EarthExplorer
 
-DATASETS = ["LANDSAT_TM_C1", "LANDSAT_ETM_C1", "LANDSAT_8_C1", "SENTINEL_2A"]
+DATASETS = [
+    "landsat_tm_c1",
+    "landsat_etm_c1",
+    "landsat_8_c1",
+    "landsat_tm_c2_l1",
+    "landsat_tm_c2_l2",
+    "landsat_etm_c2_l1",
+    "landsat_etm_c2_l2",
+    "landsat_ot_c2_l1",
+    "landsat_ot_c2_l2",
+    "sentinel_2a",
+]
 
 
 @click.group()
@@ -36,7 +47,7 @@ def cli():
 @click.option(
     "-d",
     "--dataset",
-    type=click.Choice(DATASETS),
+    type=click.Choice(DATASETS, case_sensitive=False),
     help="Landsat data set.",
     default="LANDSAT_8_C1",
 )
