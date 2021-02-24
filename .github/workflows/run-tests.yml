@@ -31,7 +31,7 @@ jobs:
         poetry run landsatxplore download --help
 
     - name: Generate coverage
-      run: poetry run pytest --cov=./landsatxplore --cov-report=xml
+      run: poetry run pytest --cov=./landsatxplore --cov-report=xml tests/
 
     - name: Upload coverage
       uses: codecov/codecov-action@v1
