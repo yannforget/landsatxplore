@@ -9,7 +9,22 @@
 
 The **landsatxplore** Python package provides an interface to the [EarthExplorer](http://earthexplorer.usgs.gov/) portal to search and download [Landsat Collections](https://landsat.usgs.gov/landsat-collections) scenes through a command-line interface or a Python API.
 
-It supports four data sets: `LANDSAT_TM_C1`, `LANDSAT_ETM_C1`, `LANDSAT_8_C1`, and `SENTINEL_2A`.
+The following datasets are supported:
+
+
+| Dataset Name | Dataset ID |
+|-|-|
+| Landsat 5 TM Collection 1 Level 1 | `landsat_tm_c1` |
+| Landsat 5 TM Collection 2 Level 1 | `landsat_tm_c2_l1` |
+| Landsat 5 TM Collection 2 Level 2 | `landsat_tm_c2_l2` |
+| Landsat 7 ETM+ Collection 1 Level 1 | `landsat_etm_c1` |
+| Landsat 7 ETM+ Collection 2 Level 1 | `landsat_etm_c2_l1` |
+| Landsat 7 ETM+ Collection 2 Level 2 | `landsat_etm_c2_l2` |
+| Landsat 8 Collection 1 Level 1 | `landsat_8_c1` |
+| Landsat 8 Collection 2 Level 1 | `landsat_ot_c2_l1` |
+| Landsat 8 Collection 2 Level 2 | `landsat_ot_c2_l2` |
+| Sentinel 2A | `sentinel_2a` |
+
 
 # Quick start
 
@@ -89,8 +104,8 @@ Usage: landsatxplore search [OPTIONS]
 Options:
   -u, --username TEXT             EarthExplorer username.
   -p, --password TEXT             EarthExplorer password.
-  -d, --dataset [LANDSAT_TM_C1|LANDSAT_ETM_C1|LANDSAT_8_C1|SENTINEL_2A]
-                                  EO data set.
+  -d, --dataset [landsat_tm_c1|landsat_etm_c1|landsat_8_c1|landsat_tm_c2_l1|landsat_tm_c2_l2|landsat_etm_c2_l1|landsat_etm_c2_l2|landsat_ot_c2_l1|landsat_ot_c2_l2|sentinel_2a]
+                                  Landsat data set.
   -l, --location FLOAT...         Point of interest (latitude, longitude).
   -b, --bbox FLOAT...             Bounding box (xmin, ymin, xmax, ymax).
   -c, --clouds INTEGER            Max. cloud cover (1-100).
@@ -116,10 +131,15 @@ Usage: landsatxplore download [OPTIONS] [SCENES]...
 Options:
   -u, --username TEXT    EarthExplorer username.
   -p, --password TEXT    EarthExplorer password.
-  -o, --output PATH      Output directory (default to current).
-  -t, --timeout INTEGER  Download timeout in seconds (default 300s).
+  -d, --dataset TEXT     Dataset.
+  -o, --output PATH      Output directory.
+  -t, --timeout INTEGER  Download timeout in seconds.
+  --skip
   --help                 Show this message and exit.
 ```
+
+If the `--dataset` is not provided, the dataset is automatically guessed from the scene identifier. Note that only the newer Landsat Product Identifiers contain information related to collection number and processing level. To download Landsat Collection 2 products, use Product IDs or set the `--dataset` option correctly.
+
 
 ## API
 
@@ -130,39 +150,54 @@ Options:
 #### Basic usage
 
 ``` python
-import landsatxplore.api
+from landsatxplore.api import API
 
 # Initialize a new API instance and get an access key
-api = landsatxplore.api.API(username, password)
+api = API(username, password)
 
 # Perform a request. Results are returned in a dictionnary
-response = api.request('<request_code>', parameter1=value1, parameter2=value2)
+response = api.request(
+    '<request_endpoint>',
+    params={
+        "param_1": value_1,
+        "param_2": value_2
+    }
+)
 
 # Log out
 api.logout()
 ```
 
+Please refer to the official [JSON API Reference](https://m2m.cr.usgs.gov/api/docs/json/) for a list of all available requests.
+
 #### Searching for scenes
 
 ``` python
-import landsatxplore.api
+import json
+from landsatxplore.api import API
 
 # Initialize a new API instance and get an access key
-api = landsatxplore.api.API(username, password)
+api = API(username, password)
 
-# Request
+# Search for Landsat TM scenes
 scenes = api.search(
-    dataset='LANDSAT_ETM_C1',
-    latitude=19.53,
-    longitude=-1.53,
+    dataset='landsat_tm_c1',
+    latitude=50.85,
+    longitude=-4.35,
     start_date='1995-01-01',
-    end_date='1997-01-01',
-    max_cloud_cover=10)
+    end_date='1995-10-01',
+    max_cloud_cover=10
+)
 
-print('{} scenes found.'.format(len(scenes)))
+print(f"{len(scenes)} scenes found.")
 
+# Process the result
 for scene in scenes:
-    print(scene['acquisitionDate'])
+    print(scene['acquisition_date'])
+    # Write scene footprints to disk
+    fname = f"{scene['landsat_product_id']}.geojson"
+    with open(fname, "w") as f:
+        json.dump(scene['spatialCoverage'], f)
 
 api.logout()
 ```
@@ -170,15 +205,13 @@ api.logout()
 Output:
 
 ```
-8 scenes found.
-1995-05-10
-1995-05-26
-1995-06-11
-1995-06-11
-1995-06-27
-1995-07-29
-1995-08-14
-1995-08-14
+6 scenes found.
+1995/08/19
+1995/08/19
+1995/08/12
+1995/08/03
+1995/08/03
+1995/02/08
 ```
 
 #### Downloading scenes
