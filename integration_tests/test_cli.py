@@ -23,7 +23,7 @@ def test_search():
         ],
     )
     assert result.exit_code == 0
-    assert "LT51950511995219MPS00" in result.output
+    assert "LT05_L1TP_195051_19950807_20170107_01_T1" in result.output
 
 
 def test_download():
