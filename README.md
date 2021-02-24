@@ -1,3 +1,8 @@
+[![Build](https://img.shields.io/github/workflow/status/yannforget/landsatxplore/Upload%20Python%20Package?label=build&logo=github)](https://github.com/yannforget/landsatxplore/actions/workflows/python-publish.yml)
+[![Tests](https://img.shields.io/github/workflow/status/yannforget/landsatxplore/Run%20tests?label=tests&logo=github)](https://github.com/yannforget/landsatxplore/actions/workflows/run-tests.yml)
+[![codecov](https://codecov.io/gh/yannforget/landsatxplore/branch/master/graph/badge.svg?token=NwVo09Edur)](https://codecov.io/gh/yannforget/landsatxplore)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1291422.svg)](https://zenodo.org/record/4543601)
+
 # Description
 
 ![CLI Demo](https://raw.githubusercontent.com/yannforget/landsatxplore/master/demo.gif?s=0.5)
