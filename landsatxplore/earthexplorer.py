@@ -2,6 +2,7 @@
 
 import os
 import re
+from urllib.parse import urljoin, urlparse, urlunparse
 
 import requests
 from tqdm import tqdm
@@ -81,9 +82,20 @@ class EarthExplorer(object):
 
     def _download(self, url, output_dir, timeout, chunk_size=1024):
         """Download remote file given its URL."""
+        # Check availability of the requested product
+        # EarthExplorer should respond with JSON
+        with self.session.get(
+            url, allow_redirects=False, stream=True, timeout=timeout
+        ) as r:
+            r.raise_for_status()
+            error_msg = r.json().get("errorMessage")
+            if error_msg:
+                raise EarthExplorerError(error_msg)
+            download_url = r.json().get("url")
+
         try:
             with self.session.get(
-                url, stream=True, allow_redirects=True, timeout=timeout
+                download_url, stream=True, allow_redirects=True, timeout=timeout
             ) as r:
                 file_size = int(r.headers.get("Content-Length"))
                 with tqdm(
