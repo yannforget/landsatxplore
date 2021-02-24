@@ -29,3 +29,11 @@ jobs:
       run: |
         poetry run landsatxplore --help
         poetry run landsatxplore download --help
+
+    - name: Generate coverage
+      run: poetry run pytest --cov=./landsatxplore --cov-report=xml
+
+    - name: Upload coverage
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}

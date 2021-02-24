@@ -28,6 +28,7 @@ shapely = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
+pytest-cov = "*"
 vcrpy = "*"
 
 [tool.poetry.urls]
