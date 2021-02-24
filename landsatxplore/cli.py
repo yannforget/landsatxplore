@@ -150,8 +150,9 @@ def search(
 @click.option(
     "--timeout", "-t", type=click.INT, default=300, help="Download timeout in seconds."
 )
+@click.option("--skip", is_flag=True, default=False)
 @click.argument("scenes", type=click.STRING, nargs=-1)
-def download(username, password, dataset, output, timeout, scenes):
+def download(username, password, dataset, output, timeout, skip, scenes):
     """Download one or several Landsat scenes."""
     ee = EarthExplorer(username, password)
     output_dir = os.path.abspath(output)
@@ -160,7 +161,11 @@ def download(username, password, dataset, output, timeout, scenes):
     for scene in scenes:
         if not ee.logged_in():
             ee = EarthExplorer(username, password)
-        ee.download(scene, output_dir, dataset=dataset, timeout=timeout)
+        fname = ee.download(
+            scene, output_dir, dataset=dataset, timeout=timeout, skip=skip
+        )
+        if skip:
+            click.echo(fname)
     ee.logout()
 
 
