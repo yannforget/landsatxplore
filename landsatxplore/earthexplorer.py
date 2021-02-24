@@ -25,11 +25,11 @@ DATA_PRODUCTS = {
     "landsat_etm_c1": "5e83a507d6aaa3db",
     "landsat_8_c1": "5e83d0b84df8d8c2",
     "landsat_tm_c2_l1": "5e83d0a0f94d7d8d",
-    "landsat_etm_c2_l1": "5e83d0d08fec8a66",
-    "landsat_ot_c2_l1": "5e81f14f92acf9ef",
+    "landsat_etm_c2_l1": "5e83d0d0d2aaa488",
+    "landsat_ot_c2_l1": "5e81f14ff4f9941c",
     "landsat_tm_c2_l2": "5e83d11933473426",
-    "landsat_etm_c2_l2": "5e83d12aed0efa58",
-    "landsat_ot_c2_l2": "5e83d14fec7cae84",
+    "landsat_etm_c2_l2": "5e83d12aada2e3c5",
+    "landsat_ot_c2_l2": "5e83d14f30ea90a9",
     "sentinel_2a": "5e83a42c6eba8084",
 }
 
@@ -80,7 +80,7 @@ class EarthExplorer(object):
         """Log out from Earth Explorer."""
         self.session.get(EE_LOGOUT_URL)
 
-    def _download(self, url, output_dir, timeout, chunk_size=1024):
+    def _download(self, url, output_dir, timeout, chunk_size=1024, skip=False):
         """Download remote file given its URL."""
         # Check availability of the requested product
         # EarthExplorer should respond with JSON
@@ -104,6 +104,8 @@ class EarthExplorer(object):
                     local_filename = r.headers["Content-Disposition"].split("=")[-1]
                     local_filename = local_filename.replace('"', "")
                     local_filename = os.path.join(output_dir, local_filename)
+                    if skip:
+                        return local_filename
                     with open(local_filename, "wb") as f:
                         for chunk in r.iter_content(chunk_size=chunk_size):
                             if chunk:
@@ -115,7 +117,7 @@ class EarthExplorer(object):
             )
         return local_filename
 
-    def download(self, scene_id, output_dir, dataset=None, timeout=300):
+    def download(self, scene_id, output_dir, dataset=None, timeout=300, skip=False):
         """Download a Landsat scene.
 
         Parameters
@@ -128,6 +130,8 @@ class EarthExplorer(object):
             Dataset name. If not provided, automatically guessed from scene id.
         timeout : int, optional
             Connection timeout in seconds.
+        skip : bool, optional
+            Skip download, only returns the remote filename.
 
         Returns
         -------
@@ -142,5 +146,5 @@ class EarthExplorer(object):
         url = EE_DOWNLOAD_URL.format(
             data_product_id=DATA_PRODUCTS[dataset], scene_id=scene_id
         )
-        filename = self._download(url, output_dir, timeout=timeout)
+        filename = self._download(url, output_dir, timeout=timeout, skip=skip)
         return filename
