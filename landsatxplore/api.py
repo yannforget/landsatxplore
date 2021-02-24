@@ -58,14 +58,14 @@ class API(object):
             else:
                 raise USGSError(f"{error_code}: {error_msg}.")
 
-    def request(self, endpoint, params):
+    def request(self, endpoint, params=None):
         """Perform a request to the USGS M2M API.
 
         Parameters
         ----------
         endpoint : str
             API endpoint.
-        params : dict
+        params : dict, optional
             API parameters.
 
         Returns
