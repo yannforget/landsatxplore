@@ -73,7 +73,7 @@ def cli():
     "-o",
     "--output",
     type=click.Choice(["scene_id", "product_id", "json", "csv"]),
-    default="scene_id",
+    default="product_id",
     help="Output format.",
 )
 @click.option("-m", "--limit", type=click.INT, help="Max. results returned.")
