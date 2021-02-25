@@ -299,6 +299,7 @@ class API(object):
                 "datasetName": dataset,
                 "sceneFilter": scene_filter,
                 "maxResults": max_results,
+                "metadataType": "full",
             },
         )
         return [self.parse_metadata(scene) for scene in r.get("results")]
