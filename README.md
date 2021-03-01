@@ -111,7 +111,7 @@ Options:
   -c, --clouds INTEGER            Max. cloud cover (1-100).
   -s, --start TEXT                Start date (YYYY-MM-DD).
   -e, --end TEXT                  End date (YYYY-MM-DD).
-  -o, --output [scene_id|product_id|json|csv]
+  -o, --output [entity_id|display_id|json|csv]
                                   Output format.
   -m, --limit INTEGER             Max. results returned.
   --help                          Show this message and exit.
@@ -193,11 +193,11 @@ print(f"{len(scenes)} scenes found.")
 
 # Process the result
 for scene in scenes:
-    print(scene['acquisition_date'])
+    print(scene['acquisition_date'].strftime('%Y-%m-%d'))
     # Write scene footprints to disk
     fname = f"{scene['landsat_product_id']}.geojson"
     with open(fname, "w") as f:
-        json.dump(scene['spatialCoverage'], f)
+        json.dump(scene['spatial_coverage'].__geo_interface__, f)
 
 api.logout()
 ```
@@ -205,13 +205,11 @@ api.logout()
 Output:
 
 ```
-6 scenes found.
-1995/08/19
-1995/08/19
-1995/08/12
-1995/08/03
-1995/08/03
-1995/02/08
+4 scenes found.
+1995-09-23
+1995-08-22
+1995-08-15
+1995-06-28
 ```
 
 #### Downloading scenes
@@ -221,7 +219,7 @@ from landsatxplore.earthexplorer import EarthExplorer
 
 ee = EarthExplorer(username, password)
 
-ee.download(scene_id='LT51960471995178MPS00', output_dir='./data')
+ee.download('LT51960471995178MPS00', output_dir='./data')
 
 ee.logout()
 ```
