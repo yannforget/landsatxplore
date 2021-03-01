@@ -26,8 +26,8 @@ jobs:
     - name: Run pytest and generate coverage report
       run: poetry run pytest --cov=./landsatxplore --cov-report=xml
       env:
-        LANDSATXPLORE_USERNAME: {{ secrets.LANDSATXPLORE_TEST_USERNAME }}
-        LANDSATXPLORE_PASSWORD: {{ secrets.LANDSATXPLORE_TEST_PASSWORD }}
+        LANDSATXPLORE_USERNAME: ${{ secrets.LANDSATXPLORE_TEST_USERNAME }}
+        LANDSATXPLORE_PASSWORD: ${{ secrets.LANDSATXPLORE_TEST_PASSWORD }}
 
     - name: Upload coverage report
       uses: codecov/codecov-action@v1
