@@ -4,21 +4,17 @@ import json
 from urllib.parse import urljoin
 import string
 import random
+from datetime import datetime
+from dateutil import parser
 import time
 
 import requests
-from shapely.geometry import Point
+from shapely.geometry import Point, shape
 
 from landsatxplore.errors import USGSAuthenticationError, USGSError, USGSRateLimitError
 
 
 API_URL = "https://m2m.cr.usgs.gov/api/api/json/stable/"
-
-
-def _random_string(length=10):
-    """Generate a random string."""
-    letters = string.ascii_lowercase
-    return "".join(random.choice(letters) for i in range(length))
 
 
 class API(object):
@@ -161,36 +157,7 @@ class API(object):
         else:
             return entity_id
 
-    @staticmethod
-    def parse_metadata(response):
-        """Parse metadata from API response.
-
-        Parameters
-        ----------
-        response : requests response
-            As returned by api.request("scene-metadata").
-
-        Returns
-        -------
-        scene_metadata : dict
-            Metadata parsed into a dict.
-        """
-        scene_metadata = {}
-        for key, value in response.items():
-            if key in ("browse", "metadata"):
-                continue
-            else:
-                scene_metadata[key] = value
-
-        for field in response["metadata"]:
-            label = field["dictionaryLink"].split("#")[-1].strip()
-            if label in ("coordinate_degrees", "coordinate_decimal"):
-                continue
-            scene_metadata[label] = field["value"]
-
-        return scene_metadata
-
-    def metadata(self, entity_id, dataset):
+    def metadata(self, entity_id, dataset, browse=False):
         """Get metadata for a given scene.
 
         Parameters
@@ -199,6 +166,8 @@ class API(object):
             Landsat Scene ID or Sentinel Entity ID.
         dataset : str
             Dataset alias.
+        browse : bool, optional
+            Include browse (LandsatLook URLs) metadata items.
 
         Returns
         -------
@@ -213,7 +182,7 @@ class API(object):
                 "metadataType": "full",
             },
         )
-        return self.parse_metadata(r)
+        return _parse_metadata(r, parse_browse_field=browse)
 
     def get_display_id(self, entity_id, dataset):
         """Get display ID from entity ID.
@@ -231,7 +200,7 @@ class API(object):
             Landsat Product ID or Sentinel Display ID.
         """
         meta = self.metadata(entity_id, dataset)
-        return meta["displayId"]
+        return meta["display_id"]
 
     def search(
         self,
@@ -302,7 +271,153 @@ class API(object):
                 "metadataType": "full",
             },
         )
-        return [self.parse_metadata(scene) for scene in r.get("results")]
+        return [_parse_metadata(scene) for scene in r.get("results")]
+
+
+def _random_string(length=10):
+    """Generate a random string."""
+    letters = string.ascii_lowercase
+    return "".join(random.choice(letters) for i in range(length))
+
+
+def _title_to_snake(src_string):
+    """Convert title case to snake_case."""
+    return src_string.lower().replace(" ", "_").replace("/", "-")
+
+
+def _camel_to_snake(src_string):
+    """Convert camelCase string to snake_case."""
+    dst_string = [src_string[0].lower()]
+    for c in src_string[1:]:
+        if c in ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
+            dst_string.append("_")
+            dst_string.append(c.lower())
+        else:
+            dst_string.append(c)
+    return "".join(dst_string)
+
+
+def _to_num(src_string):
+    """Convert string to int or float if possible.
+
+    Original value is returned if conversion failed.
+    """
+    if not isinstance(src_string, str):
+        return src_string
+    src_string = src_string.strip()
+    try:
+        return int(src_string)
+    except ValueError:
+        try:
+            return float(src_string)
+        except ValueError:
+            return src_string
+
+
+def _to_date(src_string):
+    """Convert string to datetime if possible.
+
+    Original value is returned if conversion failed.
+    """
+    if not isinstance(src_string, str):
+        return src_string
+    try:
+        return parser.parse(src_string)
+    except parser.ParserError:
+        try:
+            # Specific date format for start_time and end_time
+            nofrag, frag = src_string.split(".")
+            dtime = datetime.strptime(nofrag, "%Y:%j:%H:%M:%S")
+            dtime = dtime.replace(microsecond=int(frag[:6]))
+            return dtime
+        except ValueError:
+            pass
+    return src_string
+
+
+def _parse_value(src_value):
+    """Try to convert value to numeric or date if possible.
+
+    Original value is returned if conversion failed.
+    """
+    dst_value = src_value
+    if isinstance(dst_value, str):
+        dst_value = dst_value.strip()
+        dst_value = _to_num(dst_value)
+        dst_value = _to_date(dst_value)
+    return dst_value
+
+
+def _parse_browse_metadata(src_meta):
+    """Parse the browse field returned by the API."""
+    dst_meta = {}
+    for product in src_meta:
+        name = _title_to_snake(product["browseName"])
+        dst_meta[name] = {}
+        for field, value in product.items():
+            dst_meta[name][_camel_to_snake(field)] = value
+    return dst_meta
+
+
+def _parse_metadata_field(src_meta):
+    """Parse the metadata field returned by the API."""
+    dst_meta = {}
+    for meta in src_meta:
+        # Convert field name to snake case
+        name = _title_to_snake(meta["fieldName"])
+        # Abbreviate "identifier" by "id" for shorter names
+        name = name.replace("identifier", "id")
+        # Always use "acquisition_date" instead of "acquired_date" for consistency
+        if name == "date_acquired":
+            name = "acquisition_date"
+        # Remove processing-level information in field names for consistency
+        name = name.replace("_l1", "")
+        name = name.replace("_l2", "")
+        # Dictionary link URL also provides some information on the field
+        dict_id = meta.get("dictionaryLink").split("#")[-1].strip()
+        # Do not process this field
+        if dict_id == "coordinates_degrees":
+            continue
+        # Sentinel metadata has an "Entity ID" field that would
+        # conflict with the API entityId field
+        if name == "entity_id":
+            name = "sentinel_entity_id"
+        # Do not parse numeric IDs. Keep them as strings.
+        if name.endswith("_id"):
+            dst_meta[name] = str(meta.get("value")).strip()
+        else:
+            dst_meta[name] = _parse_value(meta.get("value"))
+    return dst_meta
+
+
+def _parse_metadata(response, parse_browse_field=False):
+    """Parse the full response returned by the API when requesting metadata."""
+    metadata = {}
+    for key, value in response.items():
+        name = _camel_to_snake(key)
+        if key == "browse":
+            if parse_browse_field:
+                metadata[name] = _parse_browse_metadata(value)
+            else:
+                continue
+        elif key == "spatialCoverage":
+            metadata[name] = shape(value)
+        elif key == "spatialBounds":
+            metadata[name] = shape(value).bounds
+        elif key == "temporalCoverage":
+            start, end = value["endDate"], value["startDate"]
+            metadata[name] = [_to_date(start), _to_date(end)]
+        elif key == "metadata":
+            metadata.update(_parse_metadata_field(value))
+        else:
+            # Do not parse numeric IDs. Keep them as strings.
+            if name.endswith("_id"):
+                metadata[name] = str(value).strip()
+            else:
+                metadata[name] = _parse_value(value)
+    if "acquisition_date" not in metadata:
+        metadata["acquisition_date"] = metadata["temporal_coverage"][0]
+    return metadata
 
 
 class Coordinate(dict):

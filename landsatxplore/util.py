@@ -122,3 +122,20 @@ def guess_dataset(identifier):
         return "sentinel_2a"
     else:
         raise LandsatxploreError("Failed to guess dataset from identifier.")
+
+
+def title_to_snake(src_string):
+    """Convert title string to snake_case."""
+    return src_string.lower().replace(" ", "_").replace("/", "-")
+
+
+def camel_to_snake(src_string):
+    """Convert camelCase string to snake_case."""
+    dst_string = [src_string[0].lower()]
+    for c in src_string[1:]:
+        if c in ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
+            dst_string.append("_")
+            dst_string.append(c.lower())
+        else:
+            dst_string.append(c)
+    return "".join(dst_string)

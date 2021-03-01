@@ -2,8 +2,9 @@
 
 import pytest
 import os
+from datetime import datetime
 from shapely.geometry import Polygon
-from landsatxplore import api, errors
+from landsatxplore import api, errors, util
 
 
 BRUSSELS_AREA = Polygon(
@@ -99,19 +100,31 @@ def test_api_get_scene_id(ee_api):
 
 def test_api_metadata(ee_api):
 
-    # Collection 1
-    SCENE_ID = "LT51730582011301MLK00"
-    DATASET = "landsat_tm_c1"
-    metadata = ee_api.metadata(SCENE_ID, DATASET)
-    assert metadata["entityId"] == SCENE_ID
-    assert metadata["landsat_scene_id"] == SCENE_ID
+    PRODUCTS = [
+        "LT05_L1GS_173058_20111028_20161005_01_T2",
+        "LE07_L1TP_173058_20200926_20201022_01_T1",
+        "LC08_L1TP_173058_20201004_20201015_01_T1",
+        "LT05_L1TP_173058_20111028_20200820_02_T1",
+        "LT05_L2SP_173058_20111028_20200820_02_T1",
+        "LE07_L1TP_173058_20200926_20201022_02_T1",
+        "LE07_L2SP_173058_20200926_20201022_02_T1",
+        "LC08_L1TP_173058_20201004_20201015_02_T1",
+        "LC08_L2SP_173058_20201004_20201016_02_T1",
+        "L1C_T30QXG_A027990_20201031T103908",
+    ]
 
-    # Collection 2
-    SCENE_ID = "LT51730582011301MLK00"
-    DATASET = "landsat_tm_c2_l1"
-    metadata = ee_api.metadata(SCENE_ID, DATASET)
-    assert metadata["entityId"] == SCENE_ID
-    assert metadata["collection_number"] == 2
+    for display_id in PRODUCTS:
+        dataset = util.guess_dataset(display_id)
+        entity_id = ee_api.get_entity_id(display_id, dataset)
+        metadata = ee_api.metadata(entity_id, dataset)
+        assert isinstance(metadata["cloud_cover"], float)
+        assert isinstance(metadata["acquisition_date"], datetime)
+        if dataset.startswith("landsat"):
+            assert util._is_landsat_product_id(metadata["landsat_product_id"])
+            assert util._is_landsat_scene_id(metadata["landsat_scene_id"])
+        elif dataset.startswith("sentinel"):
+            assert util._is_sentinel_display_id(metadata["display_id"])
+            assert util._is_sentinel_entity_id(metadata["entity_id"])
 
 
 def test_api_get_product_id(ee_api):
@@ -139,7 +152,7 @@ def test_api_search(ee_api):
         max_results=5,
     )
     assert len(scenes) >= 1
-    assert "cloudCover" in scenes[0]
+    assert "cloud_cover" in scenes[0]
 
     # Bounding box
     scenes = ee_api.search(
@@ -150,7 +163,7 @@ def test_api_search(ee_api):
         max_results=5,
     )
     assert len(scenes) >= 1
-    assert "cloudCover" in scenes[0]
+    assert "cloud_cover" in scenes[0]
 
     # Collection 2
     scenes = ee_api.search(
@@ -162,5 +175,5 @@ def test_api_search(ee_api):
         max_results=10,
     )
     assert len(scenes) >= 1
-    assert "cloudCover" in scenes[0]
-    assert scenes[0]["displayId"][5:7] == "L2"
+    assert "cloud_cover" in scenes[0]
+    assert scenes[0]["display_id"][5:7] == "L2"

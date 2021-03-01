@@ -106,11 +106,11 @@ def search(
 
     if output == "entity_id":
         for scene in results:
-            click.echo(scene["entityId"])
+            click.echo(scene["entity_id"])
 
     if output == "display_id":
         for scene in results:
-            click.echo(scene["displayId"])
+            click.echo(scene["display_id"])
 
     if output == "json":
         dump = json.dumps(results, indent=True)
