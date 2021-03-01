@@ -21,16 +21,15 @@ keywords = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-requests = "*"
-tqdm = "*"
-click = "*"
-shapely = "*"
-python-dateutil = "*"
+requests = "^2.20"
+tqdm = "^4.58"
+click = "^7.1"
+shapely = "^1.7"
+python-dateutil = "^2.8"
 
 [tool.poetry.dev-dependencies]
-pytest = "*"
-pytest-cov = "*"
-vcrpy = "*"
+pytest = "^6.2"
+pytest-cov = "^2.11"
 
 [tool.poetry.urls]
 issues = "https://github.com/yannforget/landsatxplore/issues"
