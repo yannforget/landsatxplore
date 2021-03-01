@@ -49,7 +49,7 @@ def cli():
     "-d",
     "--dataset",
     type=click.Choice(DATASETS, case_sensitive=False),
-    help="Landsat data set.",
+    help="Dataset.",
     default="LANDSAT_8_C1",
 )
 @click.option(
@@ -72,15 +72,15 @@ def cli():
 @click.option(
     "-o",
     "--output",
-    type=click.Choice(["scene_id", "product_id", "json", "csv"]),
-    default="product_id",
+    type=click.Choice(["entity_id", "display_id", "json", "csv"]),
+    default="display_id",
     help="Output format.",
 )
 @click.option("-m", "--limit", type=click.INT, help="Max. results returned.")
 def search(
     username, password, dataset, location, bbox, clouds, start, end, output, limit
 ):
-    """Search for Landsat scenes."""
+    """Search for scenes."""
     api = API(username, password)
 
     where = {"dataset": dataset}
@@ -104,11 +104,11 @@ def search(
     if not results:
         return
 
-    if output == "scene_id":
+    if output == "entity_id":
         for scene in results:
             click.echo(scene["entityId"])
 
-    if output == "product_id":
+    if output == "display_id":
         for scene in results:
             click.echo(scene["displayId"])
 
@@ -153,7 +153,7 @@ def search(
 @click.option("--skip", is_flag=True, default=False)
 @click.argument("scenes", type=click.STRING, nargs=-1)
 def download(username, password, dataset, output, timeout, skip, scenes):
-    """Download one or several Landsat scenes."""
+    """Download one or several scenes."""
     ee = EarthExplorer(username, password)
     output_dir = os.path.abspath(output)
     if dataset and dataset not in DATASETS:

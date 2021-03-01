@@ -85,7 +85,7 @@ def test_api_get_scene_id(ee_api):
 
     # Single Product ID
     PRODUCT_ID = "LT05_L1GS_173058_20111028_20161005_01_T2"
-    scene_id = ee_api.get_scene_id(PRODUCT_ID, dataset="landsat_tm_c1")
+    scene_id = ee_api.get_entity_id(PRODUCT_ID, dataset="landsat_tm_c1")
     assert scene_id == "LT51730582011301MLK00"
 
     # Multiple Product IDs
@@ -93,7 +93,7 @@ def test_api_get_scene_id(ee_api):
         "LT05_L1GS_173058_20111028_20161005_01_T2",
         "LT05_L1GS_173057_20010407_20171209_01_T2",
     ]
-    scene_ids = ee_api.get_scene_id(PRODUCT_IDS, dataset="landsat_tm_c1")
+    scene_ids = ee_api.get_entity_id(PRODUCT_IDS, dataset="landsat_tm_c1")
     assert scene_ids == ["LT51730582011301MLK00", "LT51730572001097LBG00"]
 
 
@@ -119,11 +119,11 @@ def test_api_get_product_id(ee_api):
     SCENE_ID = "LT51730582011301MLK00"
 
     # Collection 1
-    product_id = ee_api.get_product_id(SCENE_ID, "landsat_tm_c1")
+    product_id = ee_api.get_display_id(SCENE_ID, "landsat_tm_c1")
     assert product_id == "LT05_L1GS_173058_20111028_20161005_01_T2"
 
     # Collection 2
-    product_id = ee_api.get_product_id(SCENE_ID, "landsat_tm_c2_l2")
+    product_id = ee_api.get_display_id(SCENE_ID, "landsat_tm_c2_l2")
     assert product_id == "LT05_L2SP_173058_20111028_20200820_02_T1"
 
 

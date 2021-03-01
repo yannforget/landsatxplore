@@ -8,14 +8,14 @@ from tqdm import tqdm
 
 from landsatxplore.api import API
 from landsatxplore.errors import EarthExplorerError
-from landsatxplore.util import guess_dataset, is_product_id
+from landsatxplore.util import guess_dataset, is_display_id
 
 
 EE_URL = "https://earthexplorer.usgs.gov/"
 EE_LOGIN_URL = "https://ers.cr.usgs.gov/login/"
 EE_LOGOUT_URL = "https://earthexplorer.usgs.gov/logout"
 EE_DOWNLOAD_URL = (
-    "https://earthexplorer.usgs.gov/download/{data_product_id}/{scene_id}/EE/"
+    "https://earthexplorer.usgs.gov/download/{data_product_id}/{entity_id}/EE/"
 )
 
 # IDs of GeoTIFF data product for each dataset
@@ -51,7 +51,7 @@ class EarthExplorer(object):
 
     def __init__(self, username, password):
         """Access Earth Explorer portal."""
-        self.session = requests.session()
+        self.session = requests.Session()
         self.login(username, password)
         self.api = API(username, password)
 
@@ -116,13 +116,13 @@ class EarthExplorer(object):
             )
         return local_filename
 
-    def download(self, scene_id, output_dir, dataset=None, timeout=300, skip=False):
+    def download(self, identifier, output_dir, dataset=None, timeout=300, skip=False):
         """Download a Landsat scene.
 
         Parameters
         ----------
-        scene_id : str
-            Landsat Scene Identifier or Landsat Product Identifier.
+        identifier : str
+            Scene Entity ID or Display ID.
         output_dir : str
             Output directory. Automatically created if it does not exist.
         dataset : str, optional
@@ -139,11 +139,13 @@ class EarthExplorer(object):
         """
         os.makedirs(output_dir, exist_ok=True)
         if not dataset:
-            dataset = guess_dataset(scene_id)
-        if is_product_id(scene_id):
-            scene_id = self.api.get_scene_id(scene_id, dataset)
+            dataset = guess_dataset(identifier)
+        if is_display_id(identifier):
+            entity_id = self.api.get_entity_id(identifier, dataset)
+        else:
+            entity_id = identifier
         url = EE_DOWNLOAD_URL.format(
-            data_product_id=DATA_PRODUCTS[dataset], scene_id=scene_id
+            data_product_id=DATA_PRODUCTS[dataset], entity_id=entity_id
         )
         filename = self._download(url, output_dir, timeout=timeout, skip=skip)
         return filename

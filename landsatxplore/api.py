@@ -112,7 +112,7 @@ class API(object):
         self.request("logout")
         self.session = requests.Session()
 
-    def get_scene_id(self, product_id, dataset):
+    def get_entity_id(self, display_id, dataset):
         """Get scene ID from product ID.
 
         Note
@@ -124,19 +124,19 @@ class API(object):
 
         Parameters
         ----------
-        product_id : str or list of str
+        display_id : str or list of str
             Input product ID. Can also be a list of product IDs.
         dataset : str
             Dataset alias.
 
         Returns
         -------
-        scene_id : str or list of str
-            Output scene ID. Can also be a list of scene IDs depending on input.
+        entity_id : str or list of str
+            Output entity ID. Can also be a list of entity IDs depending on input.
         """
         # scene-list-add support both entityId and entityIds input parameters
         param = "entityId"
-        if isinstance(product_id, list):
+        if isinstance(display_id, list):
             param = "entityIds"
 
         # a random scene list name is created -- better error handling is needed
@@ -149,17 +149,17 @@ class API(object):
                 "listId": list_id,
                 "datasetName": dataset,
                 "idField": "displayId",
-                param: product_id,
+                param: display_id,
             },
         )
         r = self.request("scene-list-get", params={"listId": list_id})
-        scene_id = [scene["entityId"] for scene in r]
+        entity_id = [scene["entityId"] for scene in r]
         self.request("scene-list-remove", params={"listId": list_id})
 
         if param == "entityId":
-            return scene_id[0]
+            return entity_id[0]
         else:
-            return scene_id
+            return entity_id
 
     @staticmethod
     def parse_metadata(response):
@@ -190,13 +190,13 @@ class API(object):
 
         return scene_metadata
 
-    def metadata(self, scene_id, dataset):
+    def metadata(self, entity_id, dataset):
         """Get metadata for a given scene.
 
         Parameters
         ----------
-        scene_id : str
-            Landsat scene identifier.
+        entity_id : str
+            Landsat Scene ID or Sentinel Entity ID.
         dataset : str
             Dataset alias.
 
@@ -209,28 +209,28 @@ class API(object):
             "scene-metadata",
             params={
                 "datasetName": dataset,
-                "entityId": scene_id,
+                "entityId": entity_id,
                 "metadataType": "full",
             },
         )
         return self.parse_metadata(r)
 
-    def get_product_id(self, scene_id, dataset):
-        """Get product ID from scene ID.
+    def get_display_id(self, entity_id, dataset):
+        """Get display ID from entity ID.
 
         Parameters
         ----------
-        scene_id : str
-            Landsat scene identifier.
+        entity_id : str
+            LLandsat Scene ID or Sentinel Entity ID.
         dataset : str
             Dataset alias.
 
         Returns
         -------
-        product_id : str
-            Landsat product identifier.
+        display_id : str
+            Landsat Product ID or Sentinel Display ID.
         """
-        meta = self.metadata(scene_id, dataset)
+        meta = self.metadata(entity_id, dataset)
         return meta["displayId"]
 
     def search(

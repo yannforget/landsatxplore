@@ -3,11 +3,35 @@
 from landsatxplore.errors import LandsatxploreError
 
 
+def _is_landsat_product_id(id):
+    return len(id) == 40 and id.startswith("L")
+
+
+def _is_landsat_scene_id(id):
+    return len(id) == 21 and id.startswith("L")
+
+
+def _is_sentinel_display_id(id):
+    return len(id) == 34 and id.startswith("L")
+
+
+def _is_sentinel_entity_id(id):
+    return len(id) == 8 and id.isdecimal()
+
+
+def is_display_id(id):
+    return _is_landsat_product_id(id) or _is_sentinel_display_id(id)
+
+
+def is_entity_id(id):
+    return _is_landsat_scene_id(id) or _is_sentinel_entity_id(id)
+
+
 def is_product_id(identifier):
     """Check if a given identifier is a product identifier
     as opposed to a legacy scene identifier.
     """
-    return len(identifier) == 40
+    return len(identifier) == 40 and identifier.startswith("L")
 
 
 def parse_product_id(product_id):
@@ -84,19 +108,17 @@ def landsat_dataset(satellite, collection="c1", level="l1"):
 def guess_dataset(identifier):
     """Guess data set based on a scene identifier."""
     # Landsat Product Identifier
-    if is_product_id(identifier):
+    if _is_landsat_product_id(identifier):
         meta = parse_product_id(identifier)
         satellite = int(meta["satellite"])
         collection = "c" + meta["collection_number"][-1]
         level = meta["processing_level"][:2].lower()
         return landsat_dataset(satellite, collection, level)
-    # Sentinel 2 Entity ID
-    elif identifier.isdecimal():
-        return "sentinel_2a"
-    # Landsat Scene Identifier
-    elif identifier.startswith("L"):
+    elif _is_landsat_scene_id(identifier):
         meta = parse_scene_id(identifier)
         satellite = int(meta["satellite"])
         return landsat_dataset(satellite)
+    elif _is_sentinel_display_id(identifier) or _is_sentinel_entity_id(identifier):
+        return "sentinel_2a"
     else:
         raise LandsatxploreError("Failed to guess dataset from identifier.")
