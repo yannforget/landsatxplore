@@ -25,6 +25,7 @@ requests = "*"
 tqdm = "*"
 click = "*"
 shapely = "*"
+python-dateutil = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
