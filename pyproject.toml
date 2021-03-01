@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "landsatxplore"
-version = "0.12.0"
+version = "0.13.0"
 description = "Search and download Landsat scenes from EarthExplorer"
 authors = ["Yann Forget <yannforget@mailbox.org>"]
 maintainers = ["Yann Forget <yannforget@mailbox.org>"]
