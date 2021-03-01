@@ -1,7 +1,6 @@
 """Tests for api module."""
 
 import pytest
-import vcr
 import os
 from shapely.geometry import Polygon
 from landsatxplore import api, errors
@@ -68,19 +67,9 @@ def test_metadata_value():
 
 @pytest.fixture(scope="module")
 def ee_api():
-    def _filter_credentials(request):
-        if "password" in str(request.body):
-            request.body = None
-        return request
-
-    with vcr.use_cassette(
-        "tests/fixtures/vcr_cassettes/api_login.yaml",
-        before_record_request=_filter_credentials,
-    ):
-        ee = api.API(
-            os.getenv("LANDSATXPLORE_USERNAME"), os.getenv("LANDSATXPLORE_PASSWORD")
-        )
-    return ee
+    return api.API(
+        os.getenv("LANDSATXPLORE_USERNAME"), os.getenv("LANDSATXPLORE_PASSWORD")
+    )
 
 
 def test_api_login(ee_api):
@@ -88,17 +77,15 @@ def test_api_login(ee_api):
 
 
 def test_api_login_error():
-    with vcr.use_cassette("tests/fixtures/vcr_cassettes/api_login_error.yaml"):
-        with pytest.raises(errors.USGSAuthenticationError):
-            api.API("bad_username", "bad_password")
+    with pytest.raises(errors.USGSAuthenticationError):
+        api.API("bad_username", "bad_password")
 
 
 def test_api_get_scene_id(ee_api):
 
     # Single Product ID
     PRODUCT_ID = "LT05_L1GS_173058_20111028_20161005_01_T2"
-    with vcr.use_cassette("tests/fixtures/vcr_cassettes/api_scene_id.yaml"):
-        scene_id = ee_api.get_scene_id(PRODUCT_ID, dataset="landsat_tm_c1")
+    scene_id = ee_api.get_scene_id(PRODUCT_ID, dataset="landsat_tm_c1")
     assert scene_id == "LT51730582011301MLK00"
 
     # Multiple Product IDs
@@ -106,8 +93,7 @@ def test_api_get_scene_id(ee_api):
         "LT05_L1GS_173058_20111028_20161005_01_T2",
         "LT05_L1GS_173057_20010407_20171209_01_T2",
     ]
-    with vcr.use_cassette("tests/fixtures/vcr_cassettes/api_scene_ids.yaml"):
-        scene_ids = ee_api.get_scene_id(PRODUCT_IDS, dataset="landsat_tm_c1")
+    scene_ids = ee_api.get_scene_id(PRODUCT_IDS, dataset="landsat_tm_c1")
     assert scene_ids == ["LT51730582011301MLK00", "LT51730572001097LBG00"]
 
 
@@ -116,16 +102,14 @@ def test_api_metadata(ee_api):
     # Collection 1
     SCENE_ID = "LT51730582011301MLK00"
     DATASET = "landsat_tm_c1"
-    with vcr.use_cassette("tests/fixtures/vcr_cassettes/api_scene_metadata_c1.yaml"):
-        metadata = ee_api.metadata(SCENE_ID, DATASET)
+    metadata = ee_api.metadata(SCENE_ID, DATASET)
     assert metadata["entityId"] == SCENE_ID
     assert metadata["landsat_scene_id"] == SCENE_ID
 
     # Collection 2
     SCENE_ID = "LT51730582011301MLK00"
     DATASET = "landsat_tm_c2_l1"
-    with vcr.use_cassette("tests/fixtures/vcr_cassettes/api_scene_metadata_c2.yaml"):
-        metadata = ee_api.metadata(SCENE_ID, DATASET)
+    metadata = ee_api.metadata(SCENE_ID, DATASET)
     assert metadata["entityId"] == SCENE_ID
     assert metadata["collection_number"] == 2
 
@@ -135,53 +119,48 @@ def test_api_get_product_id(ee_api):
     SCENE_ID = "LT51730582011301MLK00"
 
     # Collection 1
-    with vcr.use_cassette("tests/fixtures/vcr_cassettes/api_productid_c1.yaml"):
-        product_id = ee_api.get_product_id(SCENE_ID, "landsat_tm_c1")
+    product_id = ee_api.get_product_id(SCENE_ID, "landsat_tm_c1")
     assert product_id == "LT05_L1GS_173058_20111028_20161005_01_T2"
 
     # Collection 2
-    with vcr.use_cassette("tests/fixtures/vcr_cassettes/api_productid_c2.yaml"):
-        product_id = ee_api.get_product_id(SCENE_ID, "landsat_tm_c2_l2")
+    product_id = ee_api.get_product_id(SCENE_ID, "landsat_tm_c2_l2")
     assert product_id == "LT05_L2SP_173058_20111028_20200820_02_T1"
 
 
 def test_api_search(ee_api):
 
     # Longitude and Latitude
-    with vcr.use_cassette("tests/fixtures/vcr_cassettes/api_search_c1_lonlat.yaml"):
-        scenes = ee_api.search(
-            "landsat_8_c1",
-            longitude=4.38,
-            latitude=50.85,
-            start_date="2018-01-01",
-            end_date="2018-01-07",
-            max_results=5,
-        )
+    scenes = ee_api.search(
+        "landsat_8_c1",
+        longitude=4.38,
+        latitude=50.85,
+        start_date="2018-01-01",
+        end_date="2018-01-07",
+        max_results=5,
+    )
     assert len(scenes) >= 1
     assert "cloudCover" in scenes[0]
 
     # Bounding box
-    with vcr.use_cassette("tests/fixtures/vcr_cassettes/api_search_c1_bbox.yaml"):
-        scenes = ee_api.search(
-            "landsat_8_c1",
-            bbox=BRUSSELS_AREA.bounds,
-            start_date="2018-01-01",
-            end_date="2018-01-07",
-            max_results=5,
-        )
+    scenes = ee_api.search(
+        "landsat_8_c1",
+        bbox=BRUSSELS_AREA.bounds,
+        start_date="2018-01-01",
+        end_date="2018-01-07",
+        max_results=5,
+    )
     assert len(scenes) >= 1
     assert "cloudCover" in scenes[0]
 
     # Collection 2
-    with vcr.use_cassette("tests/fixtures/vcr_cassettes/api_search_c2.yaml"):
-        scenes = ee_api.search(
-            "landsat_ot_c2_l2",
-            longitude=4.38,
-            latitude=50.85,
-            start_date="2018-01-01",
-            end_date="2018-01-31",
-            max_results=10,
-        )
-        assert len(scenes) >= 1
-        assert "cloudCover" in scenes[0]
-        assert scenes[0]["displayId"][5:7] == "L2"
+    scenes = ee_api.search(
+        "landsat_ot_c2_l2",
+        longitude=4.38,
+        latitude=50.85,
+        start_date="2018-01-01",
+        end_date="2018-01-31",
+        max_results=10,
+    )
+    assert len(scenes) >= 1
+    assert "cloudCover" in scenes[0]
+    assert scenes[0]["displayId"][5:7] == "L2"
