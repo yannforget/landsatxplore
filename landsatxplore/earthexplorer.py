@@ -79,7 +79,9 @@ class EarthExplorer(object):
         """Log out from Earth Explorer."""
         self.session.get(EE_LOGOUT_URL)
 
-    def _download(self, url, output_dir, timeout, chunk_size=1024, skip=False):
+    def _download(
+        self, url, output_dir, timeout, chunk_size=1024, skip=False, overwrite=False
+    ):
         """Download remote file given its URL."""
         # Check availability of the requested product
         # EarthExplorer should respond with JSON
@@ -93,30 +95,77 @@ class EarthExplorer(object):
             download_url = r.json().get("url")
 
         try:
+            local_filename, filesize = self._get_fileinfo(
+                download_url, timeout=timeout, output_dir=output_dir
+            )
+
+            if skip:
+                return local_filename
+
+            headers = {}
+            file_mode = "wb"
+            downloaded_bytes = 0
+            file_exists = os.path.exists(local_filename)
+
+            if file_exists and not overwrite:
+                downloaded_bytes = os.path.getsize(local_filename)
+                headers = {"Range": f"bytes={downloaded_bytes}-"}
+                file_mode = "ab"
+            if file_exists and downloaded_bytes == filesize:
+                # assert file is already complete
+                return local_filename
+
             with self.session.get(
-                download_url, stream=True, allow_redirects=True, timeout=timeout
+                download_url,
+                stream=True,
+                allow_redirects=True,
+                headers=headers,
+                timeout=timeout,
             ) as r:
-                file_size = int(r.headers.get("Content-Length"))
                 with tqdm(
-                    total=file_size, unit_scale=True, unit="B", unit_divisor=1024
+                    total=filesize,
+                    unit_scale=True,
+                    unit="B",
+                    unit_divisor=1024,
+                    initial=downloaded_bytes
                 ) as pbar:
-                    local_filename = r.headers["Content-Disposition"].split("=")[-1]
-                    local_filename = local_filename.replace('"', "")
-                    local_filename = os.path.join(output_dir, local_filename)
-                    if skip:
-                        return local_filename
-                    with open(local_filename, "wb") as f:
+                    with open(local_filename, file_mode) as f:
                         for chunk in r.iter_content(chunk_size=chunk_size):
                             if chunk:
                                 f.write(chunk)
                                 pbar.update(chunk_size)
+            return local_filename
+
         except requests.exceptions.Timeout:
             raise EarthExplorerError(
                 "Connection timeout after {} seconds.".format(timeout)
             )
-        return local_filename
 
-    def download(self, identifier, output_dir, dataset=None, timeout=300, skip=False):
+    def _get_fileinfo(self, download_url, timeout, output_dir):
+        """Get file name and size given its URL."""
+        try:
+            with self.session.get(
+                download_url, stream=True, allow_redirects=True, timeout=timeout
+            ) as r:
+                file_size = int(r.headers.get("Content-Length"))
+                local_filename = r.headers["Content-Disposition"].split("=")[-1]
+                local_filename = local_filename.replace('"', "")
+                local_filename = os.path.join(output_dir, local_filename)
+        except requests.exceptions.Timeout:
+            raise EarthExplorerError(
+                "Connection timeout after {} seconds.".format(timeout)
+            )
+        return local_filename, file_size
+
+    def download(
+        self,
+        identifier,
+        output_dir,
+        dataset=None,
+        timeout=300,
+        skip=False,
+        overwrite=False,
+    ):
         """Download a Landsat scene.
 
         Parameters
@@ -147,5 +196,7 @@ class EarthExplorer(object):
         url = EE_DOWNLOAD_URL.format(
             data_product_id=DATA_PRODUCTS[dataset], entity_id=entity_id
         )
-        filename = self._download(url, output_dir, timeout=timeout, skip=skip)
+        filename = self._download(
+            url, output_dir, timeout=timeout, skip=skip, overwrite=overwrite
+        )
         return filename
