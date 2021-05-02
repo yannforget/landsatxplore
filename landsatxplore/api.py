@@ -8,8 +8,8 @@ from landsatxplore.datamodels import spatial_filter, temporal_filter
 from landsatxplore.exceptions import EarthExplorerError
 from landsatxplore.util import is_product_id
 
-API_ENDPOINT = 'https://earthexplorer.usgs.gov/inventory/json/v/{version}/'
-
+# API_ENDPOINT = 'https://earthexplorer.usgs.gov/inventory/json/v/{version}/'
+API_ENDPOINT = 'https://m2m.cr.usgs.gov/api/api/json/stable/'
 
 def to_json(**kwargs):
     """Convert input arguments to a formatted JSON string
@@ -24,35 +24,85 @@ class API(object):
     def __init__(self, username, password, version='1.4.1'):
         """EarthExplorer API."""
         self.version = version
-        self.endpoint = API_ENDPOINT.format(version=version)
+        # self.endpoint = API_ENDPOINT.format(version=version)
+        self.endpoint = API_ENDPOINT
         self.key = self.login(username, password)
 
-    def request(self, request_code, **kwargs):
+    def request(self, request_code, kwargs):
         """Perform a request to the EE API.
         Possible request codes are listed here:
         https://earthexplorer.usgs.gov/inventory/documentation/json-api
         """
         url = self.endpoint + request_code
-        if 'apiKey' not in kwargs:
-            kwargs.update(apiKey=self.key)
-        params = to_json(**kwargs)
-        response = requests.get(url, params=params).json()
-        if response['error']:
+        # if 'apiKey' not in kwargs:
+        #     kwargs.update(apiKey=self.key)
+        params = json.dumps(kwargs)
+        headers = {'X-Auth-Token': self.key}
+        response = requests.post(url, params, headers=headers).text
+        response = json.loads(response)
+        if response['errorMessage']:
             raise EarthExplorerError('EE: {}'.format(response['error']))
         else:
-            return response['data']
+            output = response
+        return output['data']
 
     def login(self, username, password):
         """Get an API key."""
-        data = to_json(username=username, password=password, catalogID='EE')
-        response = requests.post(self.endpoint + 'login?', data=data).json()
-        if response['error']:
-            raise EarthExplorerError('EE: {}'.format(response['error']))
-        return response['data']
+        data = {'username':username, 'password':password}
+        json_data = json.dumps(data)
+        response = requests.post(self.endpoint + 'login', data=json_data)
+        # if response['error']:
+        #     raise EarthExplorerError('EE: {}'.format(response['error']))
+
+        try:
+            httpStatusCode = response.status_code
+            if response == None:
+                print("No output from service")
+                if exitIfNoResponse:
+                    sys.exit()
+                else:
+                    return False
+            output = json.loads(response.text)
+            if output['errorCode'] != None:
+                print(output['errorCode'], "- ", output['errorMessage'])
+                if exitIfNoResponse:
+                    sys.exit()
+                else:
+                    return False
+            if httpStatusCode == 404:
+                print("404 Not Found")
+                if exitIfNoResponse:
+                    sys.exit()
+                else:
+                    return False
+            elif httpStatusCode == 401:
+                print("401 Unauthorized")
+                if exitIfNoResponse:
+                    sys.exit()
+                else:
+                    return False
+            elif httpStatusCode == 400:
+                print("Error Code", httpStatusCode)
+                if exitIfNoResponse:
+                    sys.exit()
+                else:
+                    return False
+        except Exception as e:
+            response.close()
+            print(e)
+            if exitIfNoResponse:
+                sys.exit()
+            else:
+                return False
+        response.close()
+
+        return output['data']
 
     def logout(self):
         """Log out."""
-        self.request('logout')
+        headers = {'X-Auth-Token': self.key}
+        requests.post(self.endpoint + 'logout', None, headers=headers)
+
 
     def search(
             self,
@@ -63,7 +113,6 @@ class API(object):
             max_cloud_cover=None,
             start_date=None,
             end_date=None,
-            months=None,
             max_results=20):
         """Search for scenes.
 
@@ -76,7 +125,7 @@ class API(object):
         longitude : float, optional
             Longitude of the point of interest.
         bbox : tuple, optional
-            (xmin, ymin, xmax, ymax) of the bounding box.
+            (lonmin, latmin, lonmax, latmax) of the bounding box.
         max_cloud_cover : int, optional
             Max. cloud cover in percent (1-100).
         start_date : str, optional
@@ -93,24 +142,34 @@ class API(object):
         results : dict
             Results as a dictionnary.
         """
+        # payload = {
+        #             'datasetName' : '', # dataset alias
+        #             'maxResults' : 10, # max results to return
+        #             'startingNumber' : 1,
+        #             'sceneFilter' : {} # scene filter
+        #           }
+        sceneFilter = {}
+        if latitude and longitude:
+            sceneFilter.update(spatialFilter=spatial_filter(latitude, longitude))
+        if bbox:
+            # spatialFilter = {'filterType': "mbr",
+            #                  'lowerLeft': {'latitude': bbox[1], 'longitude': bbox[0]},
+            #                  'upperRight': {'latitude': bbox[3], 'longitude': bbox[2]}}
+            sceneFilter.update(spatialFilter=spatial_filter(*bbox))
+        if max_cloud_cover:
+            sceneFilter.update(cloudCoverFilter={'max':max_cloud_cover,
+                                                 'min':0,
+                                                 'incloudUnknown':False})
+        if start_date:
+            sceneFilter.update(acquisitionFilter=temporal_filter(start_date, end_date))
+
         params = {
             'datasetName': dataset,
-            'includeUnknownCloudCover': False,
-            'maxResults': max_results
+            'maxResults': max_results,
+            'sceneFilter':sceneFilter
         }
 
-        if latitude and longitude:
-            params.update(spatialFilter=spatial_filter(latitude, longitude))
-        if bbox:
-            params.update(spatialFilter=spatial_filter(*bbox))
-        if max_cloud_cover:
-            params.update(maxCloudCover=max_cloud_cover)
-        if start_date:
-            params.update(temporalFilter=temporal_filter(start_date, end_date))
-        if months:
-            params.update(months=months)
-
-        response = self.request('search', **params)
+        response = self.request('scene-search', params)
         return response['results']
 
     def lookup(self, dataset, id_list, inverse=False):

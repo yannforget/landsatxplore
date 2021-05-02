@@ -73,6 +73,6 @@ def temporal_filter(start_date, end_date=None):
     if not end_date:
         end_date = start_date
     return {
-        'startDate': start_date,
-        'endDate': end_date
+        'start': start_date,
+        'end': end_date
     }
