@@ -22,8 +22,8 @@ The following datasets are supported:
 | Landsat 7 ETM+ Collection 2 Level 2 | `landsat_etm_c2_l2` |
 | Landsat 8 Collection 1 Level 1 | `landsat_8_c1` |
 | Landsat 8 Collection 2 Level 1 | `landsat_ot_c2_l1` |
-| Landsat 8 Collection 2 Level 1 | `landsat_ot_c2_l1` |
 | Landsat 8 Collection 2 Level 2 | `landsat_ot_c2_l2` |
+| Landsat 9 Collection 2 Level 1 | `landsat_ot_c2_l1` |
 | Landsat 9 Collection 2 Level 2 | `landsat_ot_c2_l2` |
 | Sentinel 2A | `sentinel_2a` |
 
