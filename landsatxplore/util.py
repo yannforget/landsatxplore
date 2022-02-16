@@ -97,8 +97,8 @@ def landsat_dataset(satellite, collection="c1", level="l1"):
         sensor = "8"
     elif satellite == 8 and collection == "c2":
         sensor = "ot"
-    elif satellite ==  and collection == "c2":
-        sensor = "ot
+    elif satellite == 9 and collection == "c2":
+        sensor = "ot"
     else:
         raise LandsatxploreError("Failed to guess dataset from identifier.")
     dataset = f"landsat_{sensor}_{collection}"
