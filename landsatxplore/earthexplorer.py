@@ -36,14 +36,14 @@ DATA_PRODUCTS = {
 def _get_tokens(body):
     """Get `csrf_token` and `__ncforminfo`."""
     csrf = re.findall(r'name="csrf" value="(.+?)"', body)[0]
-    ncform = re.findall(r'name="__ncforminfo" value="(.+?)"', body)[0]
+    # ncform = re.findall(r'name="__ncforminfo" value="(.+?)"', body)[0]
 
     if not csrf:
         raise EarthExplorerError("EE: login failed (csrf token not found).")
-    if not ncform:
-        raise EarthExplorerError("EE: login failed (ncforminfo not found).")
+    # if not ncform:
+    #    raise EarthExplorerError("EE: login failed (ncforminfo not found).")
 
-    return csrf, ncform
+    return csrf#, ncform
 
 
 class EarthExplorer(object):
@@ -63,12 +63,13 @@ class EarthExplorer(object):
     def login(self, username, password):
         """Login to Earth Explorer."""
         rsp = self.session.get(EE_LOGIN_URL)
-        csrf, ncform = _get_tokens(rsp.text)
+        #csrf, ncform = _get_tokens(rsp.text)
+        csrf = _get_tokens(rsp.text)
         payload = {
             "username": username,
             "password": password,
             "csrf": csrf,
-            "__ncforminfo": ncform,
+            #"__ncforminfo": ncform,
         }
         rsp = self.session.post(EE_LOGIN_URL, data=payload, allow_redirects=True)
 
