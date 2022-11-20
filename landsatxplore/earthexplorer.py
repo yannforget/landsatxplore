@@ -36,13 +36,14 @@ DATA_PRODUCTS = {
 def _get_tokens(body):
     """Get `csrf_token` and `__ncforminfo`."""
     csrf = re.findall(r'name="csrf" value="(.+?)"', body)[0]
-    ncform = re.findall(r'name="__ncforminfo" value="(.+?)"', body)[0]
+    #ncform = re.findall(r'name="__ncforminfo" value="(.+?)"', body)[0]
 
     if not csrf:
         raise EarthExplorerError("EE: login failed (csrf token not found).")
-    if not ncform:
-        raise EarthExplorerError("EE: login failed (ncforminfo not found).")
-
+    #if not ncform:
+    #    raise EarthExplorerError("EE: login failed (ncforminfo not found).")
+    
+    ncform=None
     return csrf, ncform
 
 
