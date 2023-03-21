@@ -33,8 +33,8 @@ DATA_PRODUCTS = {
 }
 
 
-def _get_tokens(body):
-    """Get `csrf_token` and `__ncforminfo`."""
+def _get_token(body):
+    """Get `csrf_token`."""
     csrf = re.findall(r'name="csrf" value="(.+?)"', body)[0]
     
     if not csrf:
@@ -60,7 +60,7 @@ class EarthExplorer(object):
     def login(self, username, password):
         """Login to Earth Explorer."""
         rsp = self.session.get(EE_LOGIN_URL)
-        csrf = _get_tokens(rsp.text)
+        csrf = _get_token(rsp.text)
         payload = {
             "username": username,
             "password": password,
