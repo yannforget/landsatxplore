@@ -91,6 +91,7 @@ def landsat_dataset(satellite, collection="c1", level="l1"):
     """Get landsat dataset name."""
     if satellite == 5:
         sensor = "tm"
+        collection = "c2"
     elif satellite == 7:
         sensor = "etm"
     elif satellite == 8 and collection == "c1":
