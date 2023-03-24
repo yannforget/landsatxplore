@@ -1,30 +1,19 @@
-[![Build](https://img.shields.io/github/workflow/status/yannforget/landsatxplore/Upload%20Python%20Package?label=build&logo=github)](https://github.com/yannforget/landsatxplore/actions/workflows/python-publish.yml)
-[![Tests](https://img.shields.io/github/workflow/status/yannforget/landsatxplore/Run%20tests?label=tests&logo=github)](https://github.com/yannforget/landsatxplore/actions/workflows/run-tests.yml)
-[![codecov](https://codecov.io/gh/yannforget/landsatxplore/branch/master/graph/badge.svg?token=NwVo09Edur)](https://codecov.io/gh/yannforget/landsatxplore)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1291422.svg)](https://zenodo.org/record/4543601)
-
 # Description
 
-![CLI Demo](https://raw.githubusercontent.com/yannforget/landsatxplore/master/demo.gif?s=0.5)
-
-The **landsatxplore** Python package provides an interface to the [EarthExplorer](http://earthexplorer.usgs.gov/) portal to search and download [Landsat Collections](https://landsat.usgs.gov/landsat-collections) scenes through a command-line interface or a Python API.
+This is a working fork of the **landsatxplore** Python package, which provides an interface to the [EarthExplorer](http://earthexplorer.usgs.gov/) portal to search and download [Landsat Collections](https://landsat.usgs.gov/landsat-collections) scenes through a command-line interface or a Python API. With respect to the original (and now unfortunately abandoned) repo, I removed the decomissioned datasets and fixed some of the issues that kept it from working.
+These issues were mostly related to outdated dataset ids, to resolve which "permanently" would require restricting the userbase of this Python module to Earth Explorer users with API access. Rather than doing this, I updated the code as suggested by some users in the issues of the old repo, and I will continue doing so for the foreseeable future if necessary.
 
 The following datasets are supported:
 
 
 | Dataset Name | Dataset ID |
 |-|-|
-| Landsat 5 TM Collection 1 Level 1 | `landsat_tm_c1` |
 | Landsat 5 TM Collection 2 Level 1 | `landsat_tm_c2_l1` |
 | Landsat 5 TM Collection 2 Level 2 | `landsat_tm_c2_l2` |
-| Landsat 7 ETM+ Collection 1 Level 1 | `landsat_etm_c1` |
 | Landsat 7 ETM+ Collection 2 Level 1 | `landsat_etm_c2_l1` |
 | Landsat 7 ETM+ Collection 2 Level 2 | `landsat_etm_c2_l2` |
-| Landsat 8 Collection 1 Level 1 | `landsat_8_c1` |
 | Landsat 8 Collection 2 Level 1 | `landsat_ot_c2_l1` |
 | Landsat 8 Collection 2 Level 2 | `landsat_ot_c2_l2` |
-| Sentinel 2A | `sentinel_2a` |
-
 
 # Quick start
 
