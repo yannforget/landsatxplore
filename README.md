@@ -1,6 +1,6 @@
 # Description
 
-This is a working fork of the **landsatxplore** Python package, which provides an interface to the [EarthExplorer](http://earthexplorer.usgs.gov/) portal to search and download [Landsat Collections](https://landsat.usgs.gov/landsat-collections) scenes through a command-line interface or a Python API. With respect to the original (and now unfortunately abandoned) repo, I removed the decomissioned datasets and fixed some of the issues that kept it from working.
+This is a working fork of the **landsatxplore** Python package, which provides an interface to the [EarthExplorer](http://earthexplorer.usgs.gov/) portal to search and download [Landsat Collections](https://landsat.usgs.gov/landsat-collections) scenes through a command-line interface or a Python API. With respect to the original (and now unfortunately abandoned) repo, I removed the [decomissioned datasets](https://www.usgs.gov/landsat-missions/news/landsat-collection-1-datasets-be-removed-end-2022) and fixed some of the issues that kept it from working.
 These issues were mostly related to outdated dataset ids, to resolve which "permanently" would require restricting the userbase of this Python module to Earth Explorer users with API access. Rather than doing this, I updated the code as suggested by some users in the issues of the old repo, and I will continue doing so for the foreseeable future if necessary.
 
 The following datasets are supported:
@@ -14,6 +14,8 @@ The following datasets are supported:
 | Landsat 7 ETM+ Collection 2 Level 2 | `landsat_etm_c2_l2` |
 | Landsat 8 Collection 2 Level 1 | `landsat_ot_c2_l1` |
 | Landsat 8 Collection 2 Level 2 | `landsat_ot_c2_l2` |
+| Landsat 9 Collection 2 Level 1 | `landsat_ot_c2_l1` |
+| Landsat 9 Collection 2 Level 2 | `landsat_ot_c2_l2` |
 
 # Quick start
 
