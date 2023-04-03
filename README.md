@@ -1,5 +1,7 @@
 # Description
 
+![CLI Demo](https://raw.githubusercontent.com/yannforget/landsatxplore/master/demo.gif?s=0.5)
+
 This is a working fork of the **landsatxplore** Python package, which provides an interface to the [EarthExplorer](http://earthexplorer.usgs.gov/) portal to search and download [Landsat Collections](https://landsat.usgs.gov/landsat-collections) scenes through a command-line interface or a Python API. With respect to the original (and now unfortunately abandoned) repo, I removed the [decomissioned datasets](https://www.usgs.gov/landsat-missions/news/landsat-collection-1-datasets-be-removed-end-2022) and fixed some of the issues that kept it from working.
 These issues were mostly related to outdated dataset ids, to resolve which "permanently" would require restricting the userbase of this Python module to Earth Explorer users with API access. Rather than doing this, I updated the code as suggested by some users in the issues of the old repo, and I will continue doing so for the foreseeable future if necessary.
 
@@ -22,14 +24,14 @@ The following datasets are supported:
 Searching for Landsat 5 TM scenes that contains the location (12.53, -1.53) acquired during the year 1995.
 
 ```
-landsatxplore search --dataset LANDSAT_TM_C1 --location 12.53 -1.53 \
+landsatxplore search --dataset landsat_tm_c2_l1 --location 12.53 -1.53 \
     --start 1995-01-01 --end 1995-12-31
 ```
 
 Search for Landsat 7 ETM scenes in Brussels with less than 5% of clouds. Save the returned results in a `.csv` file.
 
 ```
-landsatxplore search --dataset LANDSAT_ETM_C1 \
+landsatxplore search --dataset landsat_tm_c2_l2 \
     --location 50.83 4.38 --clouds 5 > results.csv
 ```
 
@@ -172,7 +174,7 @@ api = API(username, password)
 
 # Search for Landsat TM scenes
 scenes = api.search(
-    dataset='landsat_tm_c1',
+    dataset='landsat_tm_c2_l1',
     latitude=50.85,
     longitude=-4.35,
     start_date='1995-01-01',
