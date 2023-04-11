@@ -12,16 +12,10 @@ jobs:
     - name: Code checkout
       uses: actions/checkout@v3
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.8'
-
-    - name: Install poetry
-      run: pip install poetry
-
-    - name: Install environment
-      run: poetry install
+#    - name: Set up Python 3.8
+#      uses: actions/setup-python@v3
+#      with:
+#        python-version: '3.8'
 
 #    - name: Run pytest and generate coverage report
 #      run: poetry run pytest --cov=./landsatxplore --cov-report=xml
@@ -33,17 +27,15 @@ jobs:
 #      uses: codecov/codecov-action@v1
 #      with:
 #        token: ${{ secrets.CODECOV_TOKEN }}
+        
+    - name: Build and publish to pypi
+      uses: JRubics/poetry-publish@v1.16
+      with:
+        pypi_token: ${{ secrets.TEST_PYPI_TOKEN }}
+        repository_name: "testpypi"
+        repository_url: "https://test.pypi.org/legacy/"
 
-    - name: Build package
-      run: poetry build
-
-    - name: Publish to Test PyPi
-      run: |
-        poetry config repositories.testpypi https://test.pypi.org/legacy/
-        poetry config pypi-token.testpypi ${{ secrets.TEST_PYPI_TOKEN }}
-        poetry publish -r testpypi
-
-    - name: Publish to PyPi
-      run: |
-        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-        poetry publish
+    - name: Build and publish to pypi
+      uses: JRubics/poetry-publish@v1.16
+      with:
+        pypi_token: ${{ secrets.PYPI_TOKEN }}
