@@ -14,31 +14,28 @@ The following datasets are supported:
 
 | Dataset Name | Dataset ID |
 |-|-|
-| Landsat 5 TM Collection 1 Level 1 | `landsat_tm_c1` |
 | Landsat 5 TM Collection 2 Level 1 | `landsat_tm_c2_l1` |
 | Landsat 5 TM Collection 2 Level 2 | `landsat_tm_c2_l2` |
-| Landsat 7 ETM+ Collection 1 Level 1 | `landsat_etm_c1` |
 | Landsat 7 ETM+ Collection 2 Level 1 | `landsat_etm_c2_l1` |
 | Landsat 7 ETM+ Collection 2 Level 2 | `landsat_etm_c2_l2` |
-| Landsat 8 Collection 1 Level 1 | `landsat_8_c1` |
 | Landsat 8 Collection 2 Level 1 | `landsat_ot_c2_l1` |
 | Landsat 8 Collection 2 Level 2 | `landsat_ot_c2_l2` |
-| Sentinel 2A | `sentinel_2a` |
-
+| Landsat 9 Collection 2 Level 1 | `landsat_ot_c2_l1` |
+| Landsat 9 Collection 2 Level 2 | `landsat_ot_c2_l2` |
 
 # Quick start
 
 Searching for Landsat 5 TM scenes that contains the location (12.53, -1.53) acquired during the year 1995.
 
 ```
-landsatxplore search --dataset LANDSAT_TM_C1 --location 12.53 -1.53 \
+landsatxplore search --dataset landsat_tm_c2_l1 --location 12.53 -1.53 \
     --start 1995-01-01 --end 1995-12-31
 ```
 
 Search for Landsat 7 ETM scenes in Brussels with less than 5% of clouds. Save the returned results in a `.csv` file.
 
 ```
-landsatxplore search --dataset LANDSAT_ETM_C1 \
+landsatxplore search --dataset landsat_tm_c2_l2 \
     --location 50.83 4.38 --clouds 5 > results.csv
 ```
 
@@ -181,7 +178,7 @@ api = API(username, password)
 
 # Search for Landsat TM scenes
 scenes = api.search(
-    dataset='landsat_tm_c1',
+    dataset='landsat_tm_c2_l1',
     latitude=50.85,
     longitude=-4.35,
     start_date='1995-01-01',
