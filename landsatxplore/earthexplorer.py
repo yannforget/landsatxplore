@@ -23,7 +23,7 @@ DATA_PRODUCTS = {
     # Level 1 datasets
     "landsat_tm_c2_l1": ["5e81f14f92acf9ef", "5e83d0a0f94d7d8d", "63231219fdd8c4e5"],
     "landsat_etm_c2_l1":[ "5e83d0d0d2aaa488", "5e83d0d08fec8a66"],
-    "landsat_ot_c2_l1": ["5e81f14ff4f9941c", "5e81f14f92acf9ef"],
+    "landsat_ot_c2_l1": ["632211e26883b1f7", "5e81f14ff4f9941c", "5e81f14f92acf9ef"],
     # Level 2 datasets
     "landsat_tm_c2_l2": ["5e83d11933473426", "5e83d11933473426", "632312ba6c0988ef"],
     "landsat_etm_c2_l2": ["5e83d12aada2e3c5", "5e83d12aed0efa58", "632311068b0935a8"],
@@ -196,6 +196,7 @@ class EarthExplorer(object):
                 filename = self._download(
                     url, output_dir, timeout=timeout, skip=skip, overwrite=overwrite
                 )
+                break
             except EarthExplorerError:
                 if id_count+1 < id_num:
                     print('Download failed with dataset id {:d} of {:d}. Re-trying with the next one.'.format(id_count+1, id_num))
