@@ -30,14 +30,16 @@ DATA_PRODUCTS = {
     "landsat_ot_c2_l2": ["5e83d14f30ea90a9", "5e83d14fec7cae84", "632210d4770592cf"]
 }
 
+
 def _get_token(body):
     """Get `csrf_token`."""
     csrf = re.findall(r'name="csrf" value="(.+?)"', body)[0]
-    
+
     if not csrf:
         raise EarthExplorerError("EE: login failed (csrf token not found).")
 
     return csrf
+
 
 class EarthExplorer(object):
     """Access Earth Explorer portal."""
@@ -62,7 +64,8 @@ class EarthExplorer(object):
             "password": password,
             "csrf": csrf,
         }
-        rsp = self.session.post(EE_LOGIN_URL, data=payload, allow_redirects=True)
+        rsp = self.session.post(
+            EE_LOGIN_URL, data=payload, allow_redirects=True)
 
         if not self.logged_in():
             raise EarthExplorerError("EE: login failed.")
@@ -70,9 +73,9 @@ class EarthExplorer(object):
     def logout(self):
         """Log out from Earth Explorer."""
         self.session.get(EE_LOGOUT_URL)
-    
+
     def _download(
-        self, url, output_dir, timeout, chunk_size=1024, skip=False, overwrite=False
+        self, url, output_dir, timeout, chunk_size=1024, skip=False, overwrite=False, show_progress=True
     ):
         """Download remote file given its URL."""
         # Check availability of the requested product
@@ -114,18 +117,24 @@ class EarthExplorer(object):
                 headers=headers,
                 timeout=timeout,
             ) as r:
-                with tqdm(
-                    total=filesize,
-                    unit_scale=True,
-                    unit="B",
-                    unit_divisor=1024,
-                    initial=downloaded_bytes
-                ) as pbar:
+                if show_progress:
+                    with tqdm(
+                        total=filesize,
+                        unit_scale=True,
+                        unit="B",
+                        unit_divisor=1024,
+                        initial=downloaded_bytes
+                    ) as pbar:
+                        with open(local_filename, file_mode) as f:
+                            for chunk in r.iter_content(chunk_size=chunk_size):
+                                if chunk:
+                                    f.write(chunk)
+                                    pbar.update(chunk_size)
+                else:
                     with open(local_filename, file_mode) as f:
                         for chunk in r.iter_content(chunk_size=chunk_size):
                             if chunk:
                                 f.write(chunk)
-                                pbar.update(chunk_size)
             return local_filename
 
         except requests.exceptions.Timeout:
@@ -140,7 +149,8 @@ class EarthExplorer(object):
                 download_url, stream=True, allow_redirects=True, timeout=timeout
             ) as r:
                 file_size = int(r.headers.get("Content-Length"))
-                local_filename = r.headers["Content-Disposition"].split("=")[-1]
+                local_filename = r.headers["Content-Disposition"].split(
+                    "=")[-1]
                 local_filename = local_filename.replace('"', "")
                 local_filename = os.path.join(output_dir, local_filename)
         except requests.exceptions.Timeout:
@@ -157,6 +167,7 @@ class EarthExplorer(object):
         timeout=300,
         skip=False,
         overwrite=False,
+        show_progress=True,
     ):
         """Download a Landsat scene.
 
@@ -172,6 +183,10 @@ class EarthExplorer(object):
             Connection timeout in seconds.
         skip : bool, optional
             Skip download, only returns the remote filename.
+        overwrite : bool, optional
+            Overwrite existing files.
+        show_progress : bool, optional
+            Show progress bar for download.
 
         Returns
         -------
@@ -194,12 +209,13 @@ class EarthExplorer(object):
                     data_product_id=dataset_id, entity_id=entity_id
                 )
                 filename = self._download(
-                    url, output_dir, timeout=timeout, skip=skip, overwrite=overwrite
+                    url, output_dir, timeout=timeout, skip=skip, overwrite=overwrite, show_progress=show_progress
                 )
                 break
             except EarthExplorerError:
                 if id_count+1 < id_num:
-                    print('Download failed with dataset id {:d} of {:d}. Re-trying with the next one.'.format(id_count+1, id_num))
+                    print(
+                        'Download failed with dataset id {:d} of {:d}. Re-trying with the next one.'.format(id_count+1, id_num))
                     pass
                 else:
                     print('None of the archived ids succeeded! Update necessary!')
