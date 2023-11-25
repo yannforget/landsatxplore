@@ -151,8 +151,9 @@ def search(
     "--timeout", "-t", type=click.INT, default=300, help="Download timeout in seconds."
 )
 @click.option("--skip", is_flag=True, default=False)
+@click.option("--overwrite", is_flag=True, default=False)
 @click.argument("scenes", type=click.STRING, nargs=-1)
-def download(username, password, dataset, output, timeout, skip, scenes):
+def download(username, password, dataset, output, timeout, skip, overwrite, scenes):
     """Download one or several scenes."""
     ee = EarthExplorer(username, password)
     output_dir = os.path.abspath(output)
@@ -162,7 +163,12 @@ def download(username, password, dataset, output, timeout, skip, scenes):
         if not ee.logged_in():
             ee = EarthExplorer(username, password)
         fname = ee.download(
-            scene, output_dir, dataset=dataset, timeout=timeout, skip=skip
+            scene,
+            output_dir,
+            dataset=dataset,
+            timeout=timeout,
+            skip=skip,
+            overwrite=overwrite,
         )
         if skip:
             click.echo(fname)

@@ -87,15 +87,16 @@ def parse_scene_id(scene_id):
     }
 
 
-def landsat_dataset(satellite, collection="c1", level="l1"):
+def landsat_dataset(satellite, collection="c2", level="l1"):
     """Get landsat dataset name."""
     if satellite == 5:
         sensor = "tm"
+        collection = "c2"
     elif satellite == 7:
         sensor = "etm"
-    elif satellite == 8 and collection == "c1":
-        sensor = "8"
-    elif satellite == 8 and collection == "c2":
+    elif satellite in (8, 9) and collection == "c1":
+        raise ValueError('Collection 1 was decommissioned!')
+    elif satellite in [8, 9] and collection == "c2":
         sensor = "ot"
     elif satellite == 9 and collection == "c2":
         sensor = "ot"
