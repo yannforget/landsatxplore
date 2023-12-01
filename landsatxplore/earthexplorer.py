@@ -188,6 +188,7 @@ class EarthExplorer(object):
         # Cycle through the available dataset ids until one works
         dataset_id_list = DATA_PRODUCTS[dataset]
         id_num = len(dataset_id_list)
+        filename = ''
         for id_count, dataset_id in enumerate(dataset_id_list):
             try:
                 url = EE_DOWNLOAD_URL.format(
@@ -196,12 +197,13 @@ class EarthExplorer(object):
                 filename = self._download(
                     url, output_dir, timeout=timeout, skip=skip, overwrite=overwrite
                 )
-                break
+                print('Download success with dataset id {:d} of {:d}.'.format(id_count + 1, id_num))
             except EarthExplorerError:
-                if id_count+1 < id_num:
-                    print('Download failed with dataset id {:d} of {:d}. Re-trying with the next one.'.format(id_count+1, id_num))
-                    pass
-                else:
-                    print('None of the archived ids succeeded! Update necessary!')
-                    raise EarthExplorerError()
+                print('Download failed with dataset id {:d} of {:d}. Re-trying with the next one.'.format(id_count+1,id_num))
+                #if id_count+1 < id_num:
+                #    print('Download failed with dataset id {:d} of {:d}. Re-trying with the next one.'.format(id_count+1, id_num))
+                #    pass
+                #else:
+                #    print('None of the archived ids succeeded! Update necessary!')
+                #    raise EarthExplorerError()
         return filename
