@@ -152,6 +152,7 @@ def search(
 )
 @click.option("--skip", is_flag=True, default=False)
 @click.option("--overwrite", is_flag=True, default=False)
+@click.option("--show-progress", is_flag=True, default=True)
 @click.argument("scenes", type=click.STRING, nargs=-1)
 def download(username, password, dataset, output, timeout, skip, overwrite, scenes):
     """Download one or several scenes."""
