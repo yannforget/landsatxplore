@@ -12,6 +12,7 @@ import requests
 from shapely.geometry import Point, shape
 
 from landsatxplore.errors import USGSAuthenticationError, USGSError, USGSRateLimitError
+from landsatxplore.util import parse_scene_id
 
 
 API_URL = "https://m2m.cr.usgs.gov/api/api/json/stable/"
@@ -271,7 +272,15 @@ class API(object):
                 "metadataType": "full",
             },
         )
-        return [_parse_metadata(scene) for scene in r.get("results")]
+        parsed_metadata = [_parse_metadata(scene) for scene in r.get("results")]
+        if dataset == 'landsat_tm_c2_l2':
+            parsed_metadata_landsat5_only = list()
+            for scene in parsed_metadata:
+                if parse_scene_id(scene['entity_id'])['satellite'] != str(4):
+                    parsed_metadata_landsat5_only.append(scene)
+            return parsed_metadata_landsat5_only
+        else:
+            return parsed_metadata
 
 
 def _random_string(length=10):
