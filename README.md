@@ -223,3 +223,21 @@ ee.download('LT51960471995178MPS00', output_dir='./data')
 
 ee.logout()
 ```
+
+
+## Local development
+
+To create a local development version of the library:
+
+([Poetry](https://python-poetry.org/) recommended: `pip install poetry`)
+
+```bash
+git clone git@github.com:barneyjackson/landsatxplore.git .
+poetry install
+```
+
+Create a copy of `example.env` named `.env` and add your credentials.
+
+### Tests
+
+Run `env $(cat .env) poetry run pytest tests/`

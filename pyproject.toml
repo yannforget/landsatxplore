@@ -23,8 +23,8 @@ keywords = [
 python = "^3.7"
 requests = "^2.20"
 tqdm = "^4.58"
-click = "^7.1"
-shapely = "^1.7"
+click = ">=8.0"
+shapely = "^2.0.5"
 python-dateutil = "^2.8"
 
 [tool.poetry.dev-dependencies]

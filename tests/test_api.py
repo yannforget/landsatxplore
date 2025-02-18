@@ -69,12 +69,20 @@ def test_metadata_value():
 @pytest.fixture(scope="module")
 def ee_api():
     return api.API(
-        os.getenv("LANDSATXPLORE_USERNAME"), os.getenv("LANDSATXPLORE_PASSWORD")
+        username = os.getenv("LANDSATXPLORE_USERNAME"), password=os.getenv("LANDSATXPLORE_PASSWORD")
     )
 
+@pytest.fixture(scope="module")
+def ee_api_with_token():
+    return api.API(
+        username=os.getenv("LANDSATXPLORE_USERNAME"), token=os.getenv("LANDSATXPLORE_TOKEN")
+    )
 
 def test_api_login(ee_api):
     assert ee_api.session.headers.get("X-Auth-Token")
+
+def test_api_login_with_token(ee_api_with_token):
+    assert ee_api_with_token.session.headers.get("X-Auth-Token")
 
 
 def test_api_login_error():
@@ -82,11 +90,11 @@ def test_api_login_error():
         api.API("bad_username", "bad_password")
 
 
-def test_api_get_scene_id(ee_api):
+def test_api_get_scene_id(ee_api_with_token: api.API):
 
     # Single Product ID
     PRODUCT_ID = "LT05_L1GS_173058_20111028_20161005_01_T2"
-    scene_id = ee_api.get_entity_id(PRODUCT_ID, dataset="landsat_tm_c1")
+    scene_id = ee_api_with_token.get_entity_id(PRODUCT_ID, dataset="landsat_tm_c1")
     assert scene_id == "LT51730582011301MLK00"
 
     # Multiple Product IDs
@@ -94,11 +102,11 @@ def test_api_get_scene_id(ee_api):
         "LT05_L1GS_173058_20111028_20161005_01_T2",
         "LT05_L1GS_173057_20010407_20171209_01_T2",
     ]
-    scene_ids = ee_api.get_entity_id(PRODUCT_IDS, dataset="landsat_tm_c1")
+    scene_ids = ee_api_with_token.get_entity_id(PRODUCT_IDS, dataset="landsat_tm_c1")
     assert scene_ids == ["LT51730582011301MLK00", "LT51730572001097LBG00"]
 
 
-def test_api_metadata(ee_api):
+def test_api_metadata(ee_api_with_token: api.API):
 
     PRODUCTS = [
         "LT05_L1GS_173058_20111028_20161005_01_T2",
@@ -115,8 +123,8 @@ def test_api_metadata(ee_api):
 
     for display_id in PRODUCTS:
         dataset = util.guess_dataset(display_id)
-        entity_id = ee_api.get_entity_id(display_id, dataset)
-        metadata = ee_api.metadata(entity_id, dataset)
+        entity_id = ee_api_with_token.get_entity_id(display_id, dataset)
+        metadata = ee_api_with_token.metadata(entity_id, dataset)
         assert isinstance(metadata["cloud_cover"], float)
         assert isinstance(metadata["acquisition_date"], datetime)
         if dataset.startswith("landsat"):
@@ -127,23 +135,23 @@ def test_api_metadata(ee_api):
             assert util._is_sentinel_entity_id(metadata["entity_id"])
 
 
-def test_api_get_product_id(ee_api):
+def test_api_get_product_id(ee_api_with_token: api.API):
 
     SCENE_ID = "LT51730582011301MLK00"
 
     # Collection 1
-    product_id = ee_api.get_display_id(SCENE_ID, "landsat_tm_c1")
+    product_id = ee_api_with_token.get_display_id(SCENE_ID, "landsat_tm_c1")
     assert product_id == "LT05_L1GS_173058_20111028_20161005_01_T2"
 
     # Collection 2
-    product_id = ee_api.get_display_id(SCENE_ID, "landsat_tm_c2_l2")
+    product_id = ee_api_with_token.get_display_id(SCENE_ID, "landsat_tm_c2_l2")
     assert product_id == "LT05_L2SP_173058_20111028_20200820_02_T1"
 
 
-def test_api_search(ee_api):
+def test_api_search(ee_api_with_token: api.API):
 
     # Longitude and Latitude
-    scenes = ee_api.search(
+    scenes = ee_api_with_token.search(
         "landsat_8_c1",
         longitude=4.38,
         latitude=50.85,
@@ -155,7 +163,7 @@ def test_api_search(ee_api):
     assert "cloud_cover" in scenes[0]
 
     # Bounding box
-    scenes = ee_api.search(
+    scenes = ee_api_with_token.search(
         "landsat_8_c1",
         bbox=BRUSSELS_AREA.bounds,
         start_date="2018-01-01",
@@ -166,7 +174,7 @@ def test_api_search(ee_api):
     assert "cloud_cover" in scenes[0]
 
     # Collection 2
-    scenes = ee_api.search(
+    scenes = ee_api_with_token.search(
         "landsat_ot_c2_l2",
         longitude=4.38,
         latitude=50.85,
